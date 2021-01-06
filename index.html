@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>大转盘</title>
+  <link rel="stylesheet" href="./css/reset.css"/>
+  <link rel="stylesheet" href="./css/index.css"/>
+</head>
+<body>
+  <main>
+    <!-- logo -->
+    <header>
+      <div class="header-left">
+        <img src="./image/logo.png" alt="光大银行" />
+      </div>
+      <div class="header-right">
+        <span id="rules">活动规则</span>
+        <i class="line"></i>
+        <span id="ranking">中奖名单</span>
+      </div>
+    </header>
+    <!-- 标题 -->
+    <div class="title ">
+      <img src="./image/title.png" alt="看直播送礼品">
+    </div>
+    <!-- 转盘 -->
+    <div class="pie-baic">
+      <img src="../image/home_h1.png" alt="红包"/>
+      <div class="pie-box">
+        <div class="pie" id="pieDisc">
+          <!-- 奖品 -->
+        </div>
+        <div class="btn" id="btnStart">
+          <img src="./image/needle.png" alt="开始抽奖"/>
+        </div>
+
+      </div>
+    </div>
+    <!--抽奖次数  -->
+    <div class="play-eg">
+      您还有
+      <span>1</span>
+      次游戏机会
+    </div>
+    <!-- 奖品展示 -->
+    <div class="prize-show">
+      <img src="./image/home_h2.png" alt="红包2" />
+      <div class="prize-show-me">
+        <span>我的奖品:</span>
+      </div>  
+      <div class="prize-show-live">
+        <span>直播奖品:</span>
+      </div>  
+    </div>      
+  </main>
+  <div class="mask" id="maskId"></div>
+  <script src="./js/flexible/flexible.js"></script>
+  <script>
+    // 遮罩元素
+    let MaskDom = document.getElementById("maskId");
+    MaskDom.addEventListener('click',(event)=>{
+      event.currentTarget.style.display = 'none';
+    },false)
+
+    // 活动规则
+    let rulesDom = document.getElementById('rules');
+    rulesDom.onclick = () => {
+      MaskDom.style.display = 'block';
+    }
+
+    // 中奖名单 
+    let rankingDom = document.getElementById('ranking');
+    rankingDom.onclick = () => {
+      MaskDom.style.display = 'block';
+    }
+
+    // 点击开始旋转
+    let startDom = document.getElementById('btnStart');
+    let pieDiscDom = document.getElementById('pieDisc');
+    let StartTime = true;
+    startDom.onclick = () => {
+      if(StartTime){
+        StartTime = false;
+        pieDiscDom.style.transition = "transform cubic-bezier(0.58, 0.13, 0.74, 0.63) 1s";
+        pieDiscDom.style.transform = "rotate("+ 1 * 360+"deg)";
+        setTimeout(()=>{
+          pieDiscDom.style.animation = "rotateLiner 500ms linear infinite";
+        },1000);
+        setTimeout(()=>{
+          pieDiscDom.style.animation = "none";
+          pieDiscDom.style.transition = "transform cubic-bezier(0.47, 0.68, 0.35, 0.81) 2s";
+          pieDiscDom.style.transform = "rotate("+ 3 * 360+"deg)";
+          console.log("111",pieDiscDom.style.transform)
+          
+          setTimeout(()=>{
+            // pieDiscDom.style.transition = 'none';
+            StartTime = true;
+            // pieDiscDom.style.transform = "rotate(0deg)"
+          },2000)
+        },5000)
+      }
+     
+    }
+
+  </script>
+</body>
+</html>
