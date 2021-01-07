@@ -246,7 +246,7 @@ header .header-right i {
   overflow-y: auto;
 }
 .rules-show .rules-show-content .rules-show-txt h3 {  
-  font-size: .333333rem;
+  font-size: .426667rem;
 }
 .rules-show .rules-show-content .rules-show-txt .ul-style {
   list-style: decimal inside;
@@ -255,7 +255,7 @@ header .header-right i {
   margin-bottom: .533333rem;
 }
 .rules-show .rules-show-content .rules-show-txt ul li {
-  font-size: .213333rem;
+  font-size: .266667rem;
   font-weight: normal;
   line-height: .426667rem;
 }
