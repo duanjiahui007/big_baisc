@@ -48,19 +48,22 @@ header .header-right i {
 .pie-baic {
   position: relative;
   padding-top: .586667rem;
-  width: 110%;
-  transform: translateX(-5%);
 }
 
 /* 红包 */
 .pie-baic>img{
-  content:"";
-  width:100%;
   position: absolute;
-  top: -.853333rem;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 3;
+}
+.pie-baic .red-box-1 {
+  height: 1.333333rem;
+  right: -1.28rem;
+  top: 0;
+}
+.pie-baic .red-box-2 {
+  height: 2.4rem;
+  top: 1.973333rem;
+  left: -1.866667rem;
 }
 
 /* 转盘框 */
@@ -149,10 +152,17 @@ header .header-right i {
   border-radius: .266667rem;
 }
 .prize-show > img {
-  width: 103%;
   position: absolute;
-  top: -0.4rem;
+}
+.prize-show .red-box-1 {
+  width: .666667rem;
+  top: -0.466667rem;
   left: 0;
+}
+.prize-show .red-box-2 {
+  width: 1.2rem;
+  right: -0.293333rem;
+  top: .266667rem;
 }
 .prize-show > div {
   background-color: #C634FF;
@@ -179,7 +189,92 @@ header .header-right i {
   height: 100vh;
   background-color: rgba(0,0,0,.8);
   display: none;
+  overflow: hidden;
+  z-index: 66;
 }
+/* 活动规则 */
+.rules-show {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%,0);
+}
+.rules-show .rules-show-title {
+  margin-bottom: .346667rem;
+}
+.rules-show .rules-show-title img{
+  width: 3.693333rem;
+  margin: 0 auto;
+}
+.rules-show .rules-show-content {
+  border-radius: .266667rem;
+  border: .013333rem solid #C634FF;
+  box-shadow: inset 0px 0px .173333rem 0px #C534FD;
+  box-sizing: border-box;
+  padding: .533333rem .266667rem;
+  width: 9.293333rem;
+  height: 9rem;
+  position: relative;
+}
+.rules-show .rules-show-content  img {
+  position: absolute;
+}
+.rules-show .rules-show-content  .red-box-1 {
+  width: .893333rem;
+  top: -.533333rem;
+  right:1.453333rem;
+}
+.rules-show .rules-show-content  .red-box-2 {
+  width: 1.36rem;
+  bottom: -.32rem;
+  right: -0.4rem;
+}
+.rules-show .rules-show-content  .red-box-3 {
+  width: .933333rem;
+  left: -0.533333rem;
+  bottom: .626667rem;
+}
+.rules-show .rules-show-content .rules-show-txt {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: #C634FF;
+  border-radius: .266667rem;
+  box-sizing: border-box;
+  padding: .2rem .146667rem;
+  color: #ffffff;
+  overflow-y: auto;
+}
+.rules-show .rules-show-content .rules-show-txt h3 {  
+  font-size: .333333rem;
+}
+.rules-show .rules-show-content .rules-show-txt .ul-style {
+  list-style: decimal inside;
+}
+.rules-show .rules-show-content .rules-show-txt ul {
+  margin-bottom: .533333rem;
+}
+.rules-show .rules-show-content .rules-show-txt ul li {
+  font-size: .213333rem;
+  font-weight: normal;
+  line-height: .426667rem;
+}
+.rules-show .rules-show-content .rules-show-txt ul li span {
+  margin-right: .133333rem;
+}
+/* 中奖名单 */
+.ranking-show .ranking-show-content {
+  height: 12.08rem;
+}
+.ranking-show .ranking-show-content .red-box-3 {
+  bottom: 0 ;
+  top: 0;
+  margin: auto;
+}
+.ranking-show .ranking-show-content .ranking-show-list {
+
+}
+
 
 /* 信息填写页 样式 */
 /* 头部 */

@@ -26,10 +26,13 @@
     </div>
     <!-- 转盘 -->
     <div class="pie-baic">
-      <img src="../image/home_h1.png" alt="红包"/>
+      <img src="./image/red-box-4.png" alt="红包4" class="red-box-1" />
+      <img src="./image/red-box-3.png" alt="红包3" class="red-box-2" />
       <div class="pie-box">
         <div class="pie" id="pieDisc">
           <!-- 奖品 -->
+          <div class="pie-prize"></div>
+
         </div>
         <div class="btn" id="btnStart">
           <img src="./image/needle.png" alt="开始抽奖"/>
@@ -45,7 +48,8 @@
     </div>
     <!-- 奖品展示 -->
     <div class="prize-show">
-      <img src="./image/home_h2.png" alt="红包2" />
+      <img src="./image/red-box-2.png" alt="红包2" class="red-box-1"/>
+      <img src="./image/red-box-1.png" alt="红包1" class="red-box-2"/>
       <div class="prize-show-me">
         <span>我的奖品:</span>
       </div>  
@@ -54,26 +58,93 @@
       </div>  
     </div>      
   </main>
-  <div class="mask" id="maskId"></div>
+  <!-- 遮罩层 -->
+  <div class="mask" id="maskId">
+    <!-- 活动规则 -->
+    <div class="rules-show" id="rules_show">
+      <div class="rules-show-title">
+        <img src="./image/rules.png" alt="活动规则"/>
+      </div>
+      <div class="rules-show-content">
+          <div class="rules-show-txt">
+            <h3>活动奖品:</h3>
+            <ul class="ul-style">
+              <li>签名书一本</li>
+              <li>保温壶一个</li>
+              <li>手宝一个</li>
+              <li>定制手账本一个</li>
+            </ul>
+            <h3>活动时间:</h3>
+            <ul >
+              <li><span>游戏时间:</span> 2020年12月28日 （仅限直播当日）</li>
+              <li><span>发奖时间:</span> 银行将在整理中奖信息后,统一邮寄</li>
+            </ul>
+            <h3>活动说明:</h3>
+            <ul class="ul-style">
+              <li>点击转盘中奖按钮,即可开始游戏;</li>
+              <li>参与直播的用户，每轮均可参加,最多可获得一份奖品;</li>
+              <li>若玩家没有提交个人信息,则视为放弃所获奖品;</li>
+              <li>奖品将根据用户填写的地址进行邮寄,无需前往银行柜台领取</li>
+            </ul>
+          </div>
+          <img src="./image/red-box-4.png" alt="红包4" class="red-box-1">
+          <img src="./image/red-box-4.png" alt="红包4" class="red-box-2">
+          <img src="./image/red-box-3.png" alt="红包3" class="red-box-3">
+      </div>
+    </div>
+    <!-- 中奖名单 -->
+    <div class="ranking-show rules-show" id="ranking_show">
+      <div class="ranking-show-title rules-show-title">
+        <img src="./image/ranking.png" alt="中奖名单"/>
+      </div>
+      <div class="ranking-show-content rules-show-content">
+        <div class="ranking-show-list rules-show-txt">
+          <ul></ul>
+        </div>
+        <img src="./image/red-box-4.png" alt="红包4" class="red-box-1">
+        <img src="./image/red-box-4.png" alt="红包4" class="red-box-2">
+        <img src="./image/red-box-3.png" alt="红包3" class="red-box-3">
+      </div>
+      
+    </div>
+    <!-- 没有游戏机会 -->
+    <div class="no-chance rules-show" id="no_chance">
+    </div>
+  </div>
   <script src="./js/flexible/flexible.js"></script>
   <script>
     // 遮罩元素
     let MaskDom = document.getElementById("maskId");
     MaskDom.addEventListener('click',(event)=>{
       event.currentTarget.style.display = 'none';
-    },false)
+      document.body.classList.remove('body-disabled');
 
+    },false)
+    // 活动规则 中奖名单显示 消息提示
+    let rulesShow = document.getElementById('rules_show');
+    let rankingShow = document.getElementById('ranking_show');
+    let noChance = document.getElementById('no_chance');
     // 活动规则
     let rulesDom = document.getElementById('rules');
     rulesDom.onclick = () => {
       MaskDom.style.display = 'block';
+      rulesShow.style.display = 'block';
+      rankingShow.style.display = 'none';
+      noChance.style.display = 'none';
+      document.body.classList.add('body-disabled');
     }
 
     // 中奖名单 
     let rankingDom = document.getElementById('ranking');
     rankingDom.onclick = () => {
       MaskDom.style.display = 'block';
+      rulesShow.style.display = 'none';
+      rankingShow.style.display = 'block';
+      noChance.style.display = 'none';
+      document.body.classList.add('body-disabled');
     }
+    // 提示信息
+    
 
     // 点击开始旋转
     //  待更改
