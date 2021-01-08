@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-  <title>大转盘</title>
+  <title>幸运抽奖大转盘</title>
   <link rel="stylesheet" href="./css/reset.css"/>
   <link rel="stylesheet" href="./css/index.css"/>
 </head>
@@ -31,8 +31,10 @@
       <div class="pie-box">
         <div class="pie" id="pieDisc">
           <!-- 奖品 -->
-          <div class="pie-prize"></div>
-
+          <!-- <div class="pie-prize">
+            <span>一等奖</span>
+            <img src="" alt="" />
+          </div> -->
         </div>
         <div class="btn" id="btnStart">
           <img src="./image/needle.png" alt="开始抽奖"/>
@@ -109,16 +111,45 @@
     </div>
     <!-- 没有游戏机会 -->
     <div class="no-chance rules-show" id="no_chance">
+      <div class="no-chance-content rules-show-content">
+        <div class="no-chance-txt rules-show-txt">您的游戏机会已用完</div>
+      </div>
+      <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
+      <img src="./image/red-box-3.png" alt="红包3" class="red-box-1">
+      <img src="./image/red-box-4.png" alt="红包4" class="red-box-2">
     </div>
   </div>
   <script src="./js/flexible/flexible.js"></script>
   <script>
+    // 中奖元素添加
+    let domPie = document.getElementById('pieDisc');
+    
+    createPrizeList(domPie,6);
+    // 生成奖品
+    function createPrizeList (domPie,w) {
+      let R = Number(window.getComputedStyle(domPie,null).width.slice(0, -2));
+      let deg = Math.PI/(2*w) ;
+      let Deg_t = 360/w ;
+      let WIDTH = 2*R*Math.sin(deg);
+      for(let i = 0 ; i<w ; i++){
+        let rotateDeg = Deg_t*i;
+        let html = `<span>谢谢参与</span>
+                  <img src="./image/thanks.png" alt="谢谢参与" />`
+        let domItem = document.createElement('div');
+        domItem.classList.add('pie-prize');
+        domItem.style.width = WIDTH-30 + "px";
+        domItem.style.transform =  "rotate("+ rotateDeg +"deg)";
+        domItem.innerHTML = html ; 
+        domPie.appendChild(domItem);
+      }
+      
+    }
+
     // 遮罩元素
     let MaskDom = document.getElementById("maskId");
     MaskDom.addEventListener('click',(event)=>{
       event.currentTarget.style.display = 'none';
       document.body.classList.remove('body-disabled');
-
     },false)
     // 活动规则 中奖名单显示 消息提示
     let rulesShow = document.getElementById('rules_show');
@@ -154,26 +185,37 @@
     startDom.onclick = () => {
       if(StartTime){
         StartTime = false;
-        pieDiscDom.style.transition = "transform cubic-bezier(0.58, 0.13, 0.74, 0.63) 1s";
-        pieDiscDom.style.transform = "rotate("+ 1 * 360+"deg)";
-        setTimeout(()=>{
-          pieDiscDom.style.animation = "rotateLiner 500ms linear infinite";
-        },1000);
-        setTimeout(()=>{
-          pieDiscDom.style.animation = "none";
-          pieDiscDom.style.transition = "transform cubic-bezier(0.47, 0.68, 0.35, 0.81) 2s";
-          pieDiscDom.style.transform = "rotate("+ 3 * 360+"deg)";
-          console.log("111",pieDiscDom.style.transform)
-          
+        pieDiscDom.style.transition = "transform ease 4s";
+        pieDiscDom.style.transform = "rotate("+ 6 * 360+"deg)";
+        let timess = 0
+        // setInterval(()=>{timess+=100},100);
+        // setTimeout(()=>{
+        //   console.log(timess,"one");
+        //   pieDiscDom.style.animation = "rotateLiner 500ms ease-in-out 1";
+        // },1000);
+        // console.log(timess,"two");
+        // setTimeout(()=>{
+        //   console.log(timess,"three");
+        //   pieDiscDom.style.animation = "none";
+        //   pieDiscDom.style.transition = "transform ease-in-out 2s";
+        //   pieDiscDom.style.transform = "rotate("+ 10 * 360+"deg)";
+        //   console.log("111",pieDiscDom.style.transform);
           setTimeout(()=>{
-            // pieDiscDom.style.transition = 'none';
+            console.log("four",timess);
+            pieDiscDom.style.transition = 'none';
+            pieDiscDom.style.transform = "rotate(0deg)";
             StartTime = true;
-            // pieDiscDom.style.transform = "rotate(0deg)"
-          },2000)
-        },5000)
+            // 显示游戏次数不足
+            MaskDom.style.display = 'block';
+            rulesShow.style.display = 'none';
+            rankingShow.style.display = 'none';
+            noChance.style.display = 'block';
+            document.body.classList.add('body-disabled');
+          },4100)
+        // },2000)
       }
-     
     }
+    // 
 
   </script>
 </body>

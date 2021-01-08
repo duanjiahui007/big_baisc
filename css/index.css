@@ -69,7 +69,7 @@ header .header-right i {
 /* 转盘框 */
 .pie-baic .pie-box {
   width: 8.84rem;
-  height: 8.893333rem;
+  height: 8.84rem;
   margin: 0 auto;
   position: relative;
   
@@ -79,12 +79,34 @@ header .header-right i {
   height: 100%;
   background-position:center center;
   background-image: url("../image/rotatePie.png");
-  background-size: 100%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   position: relative;
-  
-  /* transition: transform cubic-bezier(0.38, 0.04, 0.41, 0.99) 3s; */
 }
+/* 转盘奖品显示 */
+.pie-baic .pie .pie-prize {
+  height: 4.446667rem;
+  transform-origin: bottom center;
+  text-align: center;
+  padding: 0 .266667rem;
+  padding-top:.8rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.pie-baic .pie .pie-prize span {
+  font-size: .533333rem;
+  color: #ffffff;
+  margin-bottom: .266667rem;
+  display: block;
+}
+.pie-baic .pie .pie-prize img {
+  width: 1.066667rem;
+  margin:0 auto ;
+}
+/* 转盘按钮 */
 .pie-baic .pie-box .btn{
   position: absolute;
   width: 1.653333rem;
@@ -111,19 +133,20 @@ header .header-right i {
   transform-origin:center 1.706667rem ;
 }
 
+
 /* 动画 */
 @keyframes rotateLiner {
   0% {
     transform: rotate(0);
   }
   25% {
-    transform: rotate(90deg);
+    transform: rotate(60deg);
   }
   50% {
-    transform: rotate(180deg);
+    transform: rotate(150deg);
   }
   75% {
-    transform: rotate(270deg);
+    transform: rotate(260deg);
   }
   100% {
     transform: rotate(360deg);
@@ -274,7 +297,37 @@ header .header-right i {
 .ranking-show .ranking-show-content .ranking-show-list {
 
 }
-
+/* 没有游戏机会 */
+.no-chance .no-chance-content {
+  height: 3.333333rem;
+  width: 8.573333rem;
+  padding:  .266667rem;
+}
+.no-chance .no-chance-content .no-chance-txt {
+  font-size: .666667rem;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.no-chance > img {
+  position: absolute;
+}
+.no-chance .close-1 {
+  width: .8rem;
+  top: -0.96rem;
+  right: -0.266667rem;
+}
+.no-chance .red-box-1 {
+  width: .746667rem;
+  bottom: .533333rem;
+  left: -0.293333rem;
+}
+.no-chance .red-box-2 {
+  width: 1.466667rem;
+  right: -0.746667rem;
+  bottom: -0.16rem;
+}
 
 /* 信息填写页 样式 */
 /* 头部 */
