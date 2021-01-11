@@ -45,11 +45,44 @@
     </div>
    </div>
    <!-- 提交按钮 -->
-   <div class="submit">提交</div>
+   <div class="submit" onclick="submitData()">提交</div>
   </main>
+  <!-- 消息提示 -->
+  <div class="mask-msg mask-msg-hide">
+    <div class="msg-txt">提示消息</div>
+  </div>
   <script src="./js/flexible/flexible.js"></script>
   <script src="./js/picker/picker.min.js"></script>
   <script src="./js/picker/city.js"></script>
   <script src="./js/picker/index.js"></script>
+  <script>
+    {
+      // 消息提示
+      function  getMessage(msg,delayed=1.5) {
+        let msg_dom_txt = document.querySelector('.msg-txt');
+        let msg_dom_box = document.querySelector('.mask-msg');
+        msg_dom_txt.innerText = msg;
+        msg_dom_box.classList.remove('mask-msg-hide');
+        msg_dom_txt.classList.add('msg-txt-show');
+        setTimeout(()=>{
+          msg_dom_txt.classList.remove('msg-txt-show')
+          setTimeout(()=>{
+            msg_dom_box.classList.add('mask-msg-hide')
+          },330)
+        },delayed*1000)
+      }
+    }
+
+    {
+      // 点击提交按钮
+      function submitData() {
+        getMessage('66666');
+        setTimeout(()=>{
+          history.back();
+        },3200)
+      }
+    }
+  </script>
+
 </body>
 </html>

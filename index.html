@@ -101,7 +101,12 @@
       </div>
       <div class="ranking-show-content rules-show-content">
         <div class="ranking-show-list rules-show-txt">
-          <ul></ul>
+          <div class="list-tip">
+              <span>序号</span>
+              <span>名称</span>
+              <span>奖品</span>
+          </div>
+          <ul id="ranking-list"></ul>
         </div>
         <img src="./image/red-box-4.png" alt="红包4" class="red-box-1">
         <img src="./image/red-box-4.png" alt="红包4" class="red-box-2">
@@ -119,6 +124,7 @@
       <img src="./image/red-box-4.png" alt="红包4" class="red-box-2">
     </div>
   </div>
+  
   <script src="./js/flexible/flexible.js"></script>
   <script>
     // 中奖元素添加
@@ -133,7 +139,7 @@
       let WIDTH = 2*R*Math.sin(deg);
       for(let i = 0 ; i<w ; i++){
         let rotateDeg = Deg_t*i;
-        let html = `<span>谢谢参与</span>
+        let html = `<span>谢谢参与${i}</span>
                   <img src="./image/thanks.png" alt="谢谢参与" />`
         let domItem = document.createElement('div');
         domItem.classList.add('pie-prize');
@@ -150,6 +156,12 @@
     MaskDom.addEventListener('click',(event)=>{
       event.currentTarget.style.display = 'none';
       document.body.classList.remove('body-disabled');
+      if(isPointer){
+        startDom.style.transform = "rotate("+ preDeg +"deg)";
+      }else{
+        pieDiscDom.style.transform = "rotate("+ preDeg +"deg)";
+      }
+      
     },false)
     // 活动规则 中奖名单显示 消息提示
     let rulesShow = document.getElementById('rules_show');
@@ -167,6 +179,15 @@
 
     // 中奖名单 
     let rankingDom = document.getElementById('ranking');
+    let rankingList = document.getElementById('ranking-list');
+    for(let i = 0 ; i<100 ; i++) {
+      let html = `<li>
+      <span>${i}</span>
+      <span>名${i}称</span>
+      <span>奖${i}品</span>
+    </li>`;
+    rankingList.innerHTML += html;
+    }
     rankingDom.onclick = () => {
       MaskDom.style.display = 'block';
       rulesShow.style.display = 'none';
@@ -178,44 +199,93 @@
     
 
     // 点击开始旋转
+    // 旋转封装
+    // {
+      let prizeList = [];     //奖品数据
+      let prizeNum = 6 ;      //奖品数量
+      let userCount = 1 ;     //用户可用游戏次数
+      let userFlag = true ;   //用户是否可以玩
+      let asyncData = '' ;    //中奖数据
+      let isPointer = false;  //是否指针旋转
+      let rotateStyle = '';   //转盘旋转样式
+      let pointerStyle = '';  //指针旋转样式
+      let fixCircle = 6 ;     //转盘固定旋转圈数
+      let pointerCircle = 6 ; //指针固定旋转圈数
+      let flag = true ;       //节流
+      let winIndex = 1 ;      // 中间索引 （下标）
+      let preDeg = 0 ;        //上次游戏转盘旋转角度
+      // 获取当前用户游戏次数
+      function getUserCount(){
+        if(userCount<1){
+          userFlag = false;
+        }
+      }
+      // 点击旋转按钮
+      async function  hanldStart() {
+        if(flag) return;
+
+        flag = false;
+        let winningIndex = await Ajax() ? await Ajax() : Math.floor(Math.random()*prizeNum);
+      }
+      // 计算旋转圈数角度
+      function  countDeg(index) {
+        let cycles = isPointer? pointerCircle : fixCircle;
+        cycles*=360;
+        // 旋转角度
+        
+        let cyclesDeg = ( 360/prizeNum )*index + cycles + preDeg ;
+        // 记录角度
+        preDeg = ( 360/prizeNum )*( prizeNum - index) + cyclesDeg;
+
+        console.log( preDeg, cyclesDeg, prizeNum - index );
+
+        return cyclesDeg;
+      }
+
+    // }
     //  待更改
     let startDom = document.getElementById('btnStart');
     let pieDiscDom = document.getElementById('pieDisc');
-    let StartTime = true;
     startDom.onclick = () => {
-      if(StartTime){
-        StartTime = false;
+      
+      if(flag){
+        flag = false;
         pieDiscDom.style.transition = "transform ease 4s";
-        pieDiscDom.style.transform = "rotate("+ 6 * 360+"deg)";
-        let timess = 0
-        // setInterval(()=>{timess+=100},100);
-        // setTimeout(()=>{
-        //   console.log(timess,"one");
-        //   pieDiscDom.style.animation = "rotateLiner 500ms ease-in-out 1";
-        // },1000);
-        // console.log(timess,"two");
-        // setTimeout(()=>{
-        //   console.log(timess,"three");
-        //   pieDiscDom.style.animation = "none";
-        //   pieDiscDom.style.transition = "transform ease-in-out 2s";
-        //   pieDiscDom.style.transform = "rotate("+ 10 * 360+"deg)";
-        //   console.log("111",pieDiscDom.style.transform);
-          setTimeout(()=>{
-            console.log("four",timess);
-            pieDiscDom.style.transition = 'none';
-            pieDiscDom.style.transform = "rotate(0deg)";
-            StartTime = true;
-            // 显示游戏次数不足
-            MaskDom.style.display = 'block';
-            rulesShow.style.display = 'none';
-            rankingShow.style.display = 'none';
-            noChance.style.display = 'block';
-            document.body.classList.add('body-disabled');
-          },4100)
-        // },2000)
+        startDom.style.transition = "transform ease 4s";
+        if(isPointer) {
+          startDom.style.transform = "rotate("+ countDeg(winIndex) +"deg)"+"scale(0.9)";
+        }else {
+          pieDiscDom.style.transform = "rotate("+ countDeg(prizeNum-winIndex) +"deg)";
+        }
+        setTimeout(()=>{
+          pieDiscDom.style.transition = 'none';
+          startDom.style.transition = 'none';
+          
+          flag = true;
+          // 显示游戏次数不足
+          MaskDom.style.display = 'block';
+          rulesShow.style.display = 'none';
+          rankingShow.style.display = 'none';
+          noChance.style.display = 'block';
+          document.body.classList.add('body-disabled');
+        },4100)
       }
     }
-    // 
+    
+    {
+      // 请求简易封装
+     async function Ajax(data,path,url,async) {
+        let xhr = new XMLHttpRequest();
+        xhr.open(path,url,async);
+        xhr.onreadystatechange = function () {
+          if(xhr.status === 200 && xhr.readyState === 4){
+            return xhr.responseText;
+          }
+        }
+        xhr.send(data);
+      }
+    }
+
 
   </script>
 </body>
