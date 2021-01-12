@@ -48,13 +48,14 @@
       <span>1</span>
       次游戏机会
     </div>
+    <!-- 我的奖品 -->
+    <div class="prize-me-show" onclick="getMePrize()">
+      我的奖品
+    </div>
     <!-- 奖品展示 -->
     <div class="prize-show">
       <img src="./image/red-box-2.png" alt="红包2" class="red-box-1"/>
       <img src="./image/red-box-1.png" alt="红包1" class="red-box-2"/>
-      <div class="prize-show-me">
-        <span>我的奖品:</span>
-      </div>  
       <div class="prize-show-live">
         <span>直播奖品:</span>
       </div>  
@@ -123,10 +124,88 @@
       <img src="./image/red-box-3.png" alt="红包3" class="red-box-1">
       <img src="./image/red-box-4.png" alt="红包4" class="red-box-2">
     </div>
+    <!-- 我的奖品 -->
+    <div class="mePrize rules-show no-chance" id="me_prize">
+      <!-- 无奖品显示 （活动结束显示 ：奖品已发完 / 未获得奖品显示：您暂未获得奖品） -->
+      <div class="mePrize-content no-chance-content rules-show-content" >
+        <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
+        <div class="mePrize-txt no-chance-txt rules-show-txt">您暂未获得奖品<br/>请再接再厉</div>
+      </div>
+      <!-- 有奖品显示 -->
+      <div class="mePrize-copone" style="display: none;">
+        <div class="mePrize-copone-content rules-show-content">
+          <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
+          <div class="mePrize-copone-imges"></div>
+        </div>
+        <!-- 卡券显示 -->
+        <div class="mePrize-coupon-ma" >
+          <span>卡券编码:</span>
+          <p>卡券编码显示位</p>
+        </div>
+        <!-- 卡券说明 -->
+        <div class="mePrize-coupon-rules rules-show-content" >
+          <div class="mePrize-copone-rules-txt">
+            <h3>活动说明:</h3>
+            <ul>
+              <li>微信小程序或滴滴APP扫码免费骑行30天,每天可骑行20次。</li>
+              <li>月卡剩余天数小于30天可免费领取。当前若无月卡，领取后
+                立即生效；当前若已有月卡，领取后有效期顺延；</li>
+              <li>已领取的月卡可在【滴滴APP】或【青桔单车小程序】查看。</li>
+              <li>单车月卡生效期间，每次行程前5小时免费，5小时后正常计
+                费。月卡是否可用，以落锁时月卡状态为准。</li>
+              <li>单车月卡仅可抵扣骑行青桔单车、小蓝单车产生的费用。</li>
+              <li>当前若无月卡，领取后月卡立即生效；当前若已有月卡，领取
+                后有效期顺延。</li>
+              <li>已领取的月卡可在【滴滴客户端】-【我的】-【钱包】中查看，
+                请升级至最新版客户端查看和使用（V5.2.0及以上版本）。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 非卡券显示 -->
+        <div class="mePrize-coupon-rules-goods-txt" style="display: none;">
+          <h3>派送方式</h3>
+          <p>直播结束三日后, 银行工作人员将会致电,确认无误后会根据所填地址进行邮寄。</p>
+        </div>
+      </div>
+      
+    </div>
   </div>
   
   <script src="./js/flexible/flexible.js"></script>
+  <script src="./js/CryptoJS.min.js"></script>
+  <script src="./js/secret.js"></script>
+  <script src="./js/axios.min.js"></script>
   <script>
+    let APIURL = 'http://114.116.17.81:8234';
+
+    let API = {
+      login:'/login/'
+    }
+
+    // {
+    //   // 请求简易封装
+    //  async function Ajax(data,path,url,async) {
+    //     let xhr = new XMLHttpRequest();
+    //     xhr.open(path,url,async);
+    //     xhr.onreadystatechange = function (e) {
+    //       if(xhr.status === 200 && xhr.readyState === 4){
+    //         console.log(e)
+    //         console.log(Decrypt (xhr.responseText),'ok')
+    //         return xhr.responseText;
+    //       }
+    //     }
+    //     xhr.onerror = function () {
+    //       console.log(Decrypt (xhr.responseText),'error')
+    //       return xhr.responseText
+    //     }
+    //     xhr.send(data);
+    //   }
+    //   let code = '7knsTZjahxxoi4CQejtrKehcCSRE3KDFJtLtd4b'
+    //   Ajax(null,'GET',APIURL + API.login + code,true);
+    // }
+    
+
+
     // 中奖元素添加
     let domPie = document.getElementById('pieDisc');
     
@@ -134,9 +213,9 @@
     // 生成奖品
     function createPrizeList (domPie,w) {
       let R = Number(window.getComputedStyle(domPie,null).width.slice(0, -2));
-      let deg = Math.PI/(2*w) ;
+      let deg = Math.PI/w ;
       let Deg_t = 360/w ;
-      let WIDTH = 2*R*Math.sin(deg);
+      let WIDTH = R*Math.sin(deg);
       for(let i = 0 ; i<w ; i++){
         let rotateDeg = Deg_t*i;
         let html = `<span>谢谢参与${i}</span>
@@ -156,17 +235,19 @@
     MaskDom.addEventListener('click',(event)=>{
       event.currentTarget.style.display = 'none';
       document.body.classList.remove('body-disabled');
-      if(isPointer){
-        startDom.style.transform = "rotate("+ preDeg +"deg)";
-      }else{
-        pieDiscDom.style.transform = "rotate("+ preDeg +"deg)";
+      if(flag){
+        if(isPointer){
+          startDom.style.transform = "rotate("+ preDeg +"deg)";
+        }else{
+          pieDiscDom.style.transform = "rotate("+ preDeg +"deg)";
+        }
       }
-      
     },false)
     // 活动规则 中奖名单显示 消息提示
     let rulesShow = document.getElementById('rules_show');
     let rankingShow = document.getElementById('ranking_show');
     let noChance = document.getElementById('no_chance');
+    let mePrize = document.getElementById('me_prize');
     // 活动规则
     let rulesDom = document.getElementById('rules');
     rulesDom.onclick = () => {
@@ -174,9 +255,19 @@
       rulesShow.style.display = 'block';
       rankingShow.style.display = 'none';
       noChance.style.display = 'none';
+      mePrize.style.display = 'none';
       document.body.classList.add('body-disabled');
     }
 
+    // 我的奖品
+    function getMePrize() {
+      MaskDom.style.display = 'block';
+      rulesShow.style.display = 'none';
+      rankingShow.style.display = 'none';
+      noChance.style.display = 'none';
+      mePrize.style.display = 'block';
+      document.body.classList.add('body-disabled');
+    }
     // 中奖名单 
     let rankingDom = document.getElementById('ranking');
     let rankingList = document.getElementById('ranking-list');
@@ -193,6 +284,7 @@
       rulesShow.style.display = 'none';
       rankingShow.style.display = 'block';
       noChance.style.display = 'none';
+      mePrize.style.display = 'none';
       document.body.classList.add('body-disabled');
     }
     // 提示信息
@@ -237,22 +329,18 @@
         // 记录角度
         preDeg = ( 360/prizeNum )*( prizeNum - index) + cyclesDeg;
 
-        console.log( preDeg, cyclesDeg, prizeNum - index );
-
         return cyclesDeg;
       }
-
     // }
     //  待更改
     let startDom = document.getElementById('btnStart');
     let pieDiscDom = document.getElementById('pieDisc');
     startDom.onclick = () => {
-      
       if(flag){
         flag = false;
         pieDiscDom.style.transition = "transform ease 4s";
-        startDom.style.transition = "transform ease 4s";
         if(isPointer) {
+          startDom.style.transition = "transform ease 4s";
           startDom.style.transform = "rotate("+ countDeg(winIndex) +"deg)"+"scale(0.9)";
         }else {
           pieDiscDom.style.transform = "rotate("+ countDeg(prizeNum-winIndex) +"deg)";
@@ -267,24 +355,14 @@
           rulesShow.style.display = 'none';
           rankingShow.style.display = 'none';
           noChance.style.display = 'block';
+          mePrize.style.display = 'none';
           document.body.classList.add('body-disabled');
         },4100)
       }
     }
     
-    {
-      // 请求简易封装
-     async function Ajax(data,path,url,async) {
-        let xhr = new XMLHttpRequest();
-        xhr.open(path,url,async);
-        xhr.onreadystatechange = function () {
-          if(xhr.status === 200 && xhr.readyState === 4){
-            return xhr.responseText;
-          }
-        }
-        xhr.send(data);
-      }
-    }
+    
+
 
 
   </script>
