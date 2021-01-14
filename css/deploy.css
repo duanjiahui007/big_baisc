@@ -1,0 +1,48 @@
+@import "./reset.css";
+
+/* 公共input */
+
+
+main{
+  min-height: 100vh;
+  background-image: url("../image/bj.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center top;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-attachment: fixed;
+}
+
+/* logo  */
+header {
+  padding: .32rem .24rem;
+  margin-bottom: .493333rem;
+}
+header .logo {
+  width: 5.653333rem;
+  height: .6rem;
+}
+header .logo img{
+  width: 100%;
+  height: 100%;
+}
+
+/* 配置内容 */
+.tool {
+  padding: 0 .186667rem;
+}
+.tool .tool-content {
+  background-color: rgba(0,0,0,.3);
+  padding: .52rem .133333rem;
+}
+.tool .tool-content .tool-title {
+  width: 4.693333rem;
+  height: 1.2rem;
+  margin: 0 auto;
+}
+.tool .tool-content .tool-title img {
+  width: 100%;
+  height: 100%;
+}

@@ -1,13 +1,16 @@
+
 main {
   padding: .306667rem .293333rem;
-  min-height: 100vh;
+  height: 100%;
   background-image: url("../image/bj.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center top;
   box-sizing: border-box;
   padding-bottom: 2.133333rem;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-attachment: fixed;
 }
 /* 头部 */
 header {
@@ -215,7 +218,8 @@ header .header-right i {
   height: 100vh;
   background-color: rgba(0,0,0,.8);
   display: none;
-  overflow: hidden;
+  overflow:hidden;
+  overflow-y: auto;
   z-index: 66;
 }
 /* 提示消息 */
@@ -302,7 +306,8 @@ header .header-right i {
   overflow-y: auto;
 }
 .rules-show .rules-show-content .rules-show-txt h3 {  
-  font-size: .426667rem;
+  font-size: .373333rem;
+  line-height: .533333rem;
 }
 .rules-show .rules-show-content .rules-show-txt .ul-style {
   list-style: decimal inside;
@@ -311,7 +316,7 @@ header .header-right i {
   margin-bottom: .533333rem;
 }
 .rules-show .rules-show-content .rules-show-txt ul li {
-  font-size: .266667rem;
+  font-size: .32rem;
   font-weight: normal;
   line-height: .426667rem;
 }
@@ -366,6 +371,18 @@ header .header-right i {
   text-align: center;
 }
 /* 我的奖品 */
+.mePrize {
+   position: relative;
+   padding-top: 1.066667rem;
+   top: auto;
+   left: auto;
+   transform: none;
+   min-height: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+}
 .mePrize .mePrize-content {
   position: relative;
 }
@@ -373,6 +390,10 @@ header .header-right i {
   font-size: .266667rem;
   text-align: center;
   line-height: .8rem;
+}
+/* 非卡券显示 */
+.mePrize .mePrize-copone-no-code {
+  transform: translateY(-1.066667rem);
 }
 .mePrize .mePrize-copone .mePrize-copone-content{
   position: relative;
@@ -399,7 +420,7 @@ header .header-right i {
   background-image: linear-gradient(90deg,#c634ff,#c634ff,#e532ff,#e532ff);
   font-size: .373333rem;
   color: #ffffff;
-  margin: .533333rem auto ;
+  margin: .266667rem auto ;
   border-radius: .213333rem;
   display: flex;
   align-items: center;
@@ -414,12 +435,29 @@ header .header-right i {
   flex: 1;
   letter-spacing: .026667rem;
 }
+.mePrize .mePrize-copone .mePrize-coupon-title img{
+  width: 3.6rem;
+  margin: 0 auto .133333rem;
+}
 .mePrize .mePrize-copone .mePrize-coupon-rules {
   width: 8rem;
-  height: 9rem;
+  height: 4.8rem;
   padding: .266667rem;
-  
+  margin: 0 auto;
 }
+.mePrize .mePrize-copone .mePrize-coupon-code {
+  font-size: .293333rem;
+  color: #ffffff;
+  line-height: .373333rem;
+  margin: .266667rem auto;
+  text-align: center;
+  width: 2.666667rem;
+}
+.mePrize .mePrize-copone .mePrize-coupon-code img {
+  margin-top: .133333rem;
+  width:100%
+}
+
 
 .mePrize .mePrize-copone .mePrize-coupon-rules .mePrize-copone-rules-txt {
   color: #ffffff;
@@ -432,15 +470,15 @@ header .header-right i {
   display: flex;
   flex-direction: column;
 }
-.mePrize .mePrize-copone .mePrize-coupon-rules .mePrize-copone-rules-txt h3 {
+/* .mePrize .mePrize-copone .mePrize-coupon-rules .mePrize-copone-rules-txt h3 {
   font-size: .426667rem;
   line-height: .613333rem;
   flex-shrink: 0;
   margin-bottom: .133333rem;
-}
+} */
 .mePrize .mePrize-copone .mePrize-coupon-rules .mePrize-copone-rules-txt ul {
-  list-style:   decimal;
-  padding-left: .32rem;
+  /* list-style:   decimal; */
+  /* padding-left: .32rem; */
   box-sizing: border-box;
   flex: 1;
   overflow-y: auto;
@@ -448,9 +486,16 @@ header .header-right i {
 .mePrize .mePrize-copone .mePrize-coupon-rules .mePrize-copone-rules-txt ul li {
   font-size: .32rem;
   line-height: .453333rem;
-  
 }
-
+.mePrize .mePrize-copone .mePrize-coupon-rules .mePrize-copone-rules-txt .li-title {
+  margin-bottom: .133333rem;
+}
+.mePrize .mePrize-copone .mePrize-coupon-rules .mePrize-copone-rules-txt .li-content {
+  margin-bottom: .4rem;
+}
+.mePrize .mePrize-copone .mePrize-coupon-rules .mePrize-copone-rules-txt .li-content:nth-last-of-type(1){
+  margin-bottom: 0;
+}
 .mePrize .mePrize-copone  .mePrize-coupon-rules-goods-txt {
   margin-bottom: .533333rem;
   text-align: center;
@@ -465,6 +510,8 @@ header .header-right i {
   line-height: .46667rem;
   font-size: .293333rem;
   letter-spacing: .023333rem;
+  width: 5.333333rem;
+  margin: 0 auto;
 }
 /* 没有游戏机会 */
 .no-chance .no-chance-content {

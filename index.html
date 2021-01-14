@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <title>幸运抽奖大转盘</title>
   <link rel="stylesheet" href="./css/reset.css"/>
-  <link rel="stylesheet" href="./css/index.css"/>
+  <link rel="stylesheet" href="./css/index.css?v=2"/>
 </head>
 <body>
   <main>
@@ -71,23 +71,23 @@
       <div class="rules-show-content">
           <div class="rules-show-txt">
             <h3>活动奖品:</h3>
-            <ul class="ul-style">
-              <li>签名书一本</li>
-              <li>保温壶一个</li>
-              <li>手宝一个</li>
-              <li>定制手账本一个</li>
+            <ul>
+              <li>一等奖: 小米蓝牙耳机一副。</li>
+              <li>二等奖: 阿玛尼丝绒哑唇釉一支。</li>
+              <li>三等奖: 小熊咖啡机一台。</li>
+              <li>四等奖: 蛋糕、电影、网络视听50元通用券一张。</li>
             </ul>
             <h3>活动时间:</h3>
             <ul >
-              <li><span>游戏时间:</span> 2020年12月28日 （仅限直播当日）</li>
-              <li><span>发奖时间:</span> 银行将在整理中奖信息后,统一邮寄</li>
+              <li> 2021年1月30日 （仅限直播当日）</li>
+              <!-- <li><span>发奖时间:</span> 银行将在整理中奖信息后,统一邮寄</li> -->
             </ul>
             <h3>活动说明:</h3>
             <ul class="ul-style">
-              <li>点击转盘中奖按钮,即可开始游戏;</li>
-              <li>参与直播的用户，每轮均可参加,最多可获得一份奖品;</li>
+              <li>大转盘抽奖分多轮进行,点击转盘中间按钮,即可开始游戏;</li>
               <li>若玩家没有提交个人信息,则视为放弃所获奖品;</li>
-              <li>奖品将根据用户填写的地址进行邮寄,无需前往银行柜台领取</li>
+              <li>若玩家没有提交个人信息,则视为放弃所获奖品;</li>
+              <li>若为实物类奖品,将根据用户填写的地址进行邮寄;若为卡券类奖品,请根据中奖页面的二维码提示进行领取使用。</li>
             </ul>
           </div>
           <img src="./image/red-box-4.png" alt="红包4" class="red-box-1">
@@ -127,85 +127,68 @@
     <!-- 我的奖品 -->
     <div class="mePrize rules-show no-chance" id="me_prize">
       <!-- 无奖品显示 （活动结束显示 ：奖品已发完 / 未获得奖品显示：您暂未获得奖品） -->
-      <div class="mePrize-content no-chance-content rules-show-content" >
+      <div class="mePrize-content no-chance-content rules-show-content"  style="display: none;">
         <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
         <div class="mePrize-txt no-chance-txt rules-show-txt">您暂未获得奖品<br/>请再接再厉</div>
       </div>
       <!-- 有奖品显示 -->
-      <div class="mePrize-copone" style="display: none;">
+      <div class="mePrize-copone" >
         <div class="mePrize-copone-content rules-show-content">
           <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
           <div class="mePrize-copone-imges"></div>
         </div>
-        <!-- 卡券显示 -->
-        <div class="mePrize-coupon-ma" >
+        <!-- 卡券显示/卡券密码显示 -->
+        <div class="mePrize-coupon-ma">
           <span>卡券编码:</span>
           <p>卡券编码显示位</p>
+        </div> 
+        <div class="mePrize-coupon-ma" >
+          <span>卡券密码:</span>
+          <p>卡券密码显示</p>
+        </div>
+        <div class="mePrize-coupon-title" >
+          <img src="./image/code-title.png" />
         </div>
         <!-- 卡券说明 -->
         <div class="mePrize-coupon-rules rules-show-content" >
           <div class="mePrize-copone-rules-txt">
-            <h3>活动说明:</h3>
+            <!-- <h3>活动说明:</h3> -->
             <ul>
-              <li>微信小程序或滴滴APP扫码免费骑行30天,每天可骑行20次。</li>
-              <li>月卡剩余天数小于30天可免费领取。当前若无月卡，领取后
-                立即生效；当前若已有月卡，领取后有效期顺延；</li>
-              <li>已领取的月卡可在【滴滴APP】或【青桔单车小程序】查看。</li>
-              <li>单车月卡生效期间，每次行程前5小时免费，5小时后正常计
-                费。月卡是否可用，以落锁时月卡状态为准。</li>
-              <li>单车月卡仅可抵扣骑行青桔单车、小蓝单车产生的费用。</li>
-              <li>当前若无月卡，领取后月卡立即生效；当前若已有月卡，领取
-                后有效期顺延。</li>
-              <li>已领取的月卡可在【滴滴客户端】-【我的】-【钱包】中查看，
-                请升级至最新版客户端查看和使用（V5.2.0及以上版本）。</li>
+              <li class="li-title">
+                方式一: 线下店内刷卡购买
+              </li>
+              <li class="li-content">持卡至陕西省内米旗,御品轩,帕芙林,面包新语,塞拉维等5个品牌下所有门店直接刷卡支付,店内产品没有限制。</li>
+              
+              <li class="li-title">
+                方式二: 线上福利平台
+              </li>
+              <li class="li-content">微信扫描卡背中福尚优公众号并关注-进入我的卡券-绑定卡券-输入账号密码绑定卡券-绑定成功</li>
             </ul>
           </div>
+        </div>
+        <!-- 商家二维码 -->
+        <div class="mePrize-coupon-code" >
+          <p>扫描下方商家二维码 了解更多使用详情</p>
+          <img src="./image/code.png" alt="中福尚优" />
         </div>
         <!-- 非卡券显示 -->
         <div class="mePrize-coupon-rules-goods-txt" style="display: none;">
           <h3>派送方式</h3>
           <p>直播结束三日后, 银行工作人员将会致电,确认无误后会根据所填地址进行邮寄。</p>
         </div>
+        
       </div>
       
     </div>
   </div>
   
   <script src="./js/flexible/flexible.js"></script>
-  <script src="./js/CryptoJS.min.js"></script>
-  <script src="./js/secret.js"></script>
-  <script src="./js/axios.min.js"></script>
+  <script src="./js/tool/CryptoJS.min.js"></script>
+  <script src="./js/tool/secret.js"></script>
+  <script src="./js/tool/axios.min.js"></script>
+  <!-- 登陆 -->
+  <!-- <script src="./js/home/login.js"></script> -->
   <script>
-    let APIURL = 'http://114.116.17.81:8234';
-
-    let API = {
-      login:'/login/'
-    }
-
-    // {
-    //   // 请求简易封装
-    //  async function Ajax(data,path,url,async) {
-    //     let xhr = new XMLHttpRequest();
-    //     xhr.open(path,url,async);
-    //     xhr.onreadystatechange = function (e) {
-    //       if(xhr.status === 200 && xhr.readyState === 4){
-    //         console.log(e)
-    //         console.log(Decrypt (xhr.responseText),'ok')
-    //         return xhr.responseText;
-    //       }
-    //     }
-    //     xhr.onerror = function () {
-    //       console.log(Decrypt (xhr.responseText),'error')
-    //       return xhr.responseText
-    //     }
-    //     xhr.send(data);
-    //   }
-    //   let code = '7knsTZjahxxoi4CQejtrKehcCSRE3KDFJtLtd4b'
-    //   Ajax(null,'GET',APIURL + API.login + code,true);
-    // }
-    
-
-
     // 中奖元素添加
     let domPie = document.getElementById('pieDisc');
     
@@ -265,7 +248,7 @@
       rulesShow.style.display = 'none';
       rankingShow.style.display = 'none';
       noChance.style.display = 'none';
-      mePrize.style.display = 'block';
+      mePrize.style.display = 'flex';
       document.body.classList.add('body-disabled');
     }
     // 中奖名单 
