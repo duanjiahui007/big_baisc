@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta name="viewport" viewport-fit=cover>
   <title>幸运抽奖大转盘</title>
   <link rel="stylesheet" href="./css/reset.css"/>
   <link rel="stylesheet" href="./css/index.css?v=2"/>
@@ -132,11 +133,25 @@
         <div class="mePrize-txt no-chance-txt rules-show-txt">您暂未获得奖品<br/>请再接再厉</div>
       </div>
       <!-- 有奖品显示 -->
-      <div class="mePrize-copone" >
-        <div class="mePrize-copone-content rules-show-content">
-          <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
-          <div class="mePrize-copone-imges"></div>
-        </div>
+      <div class="mePrize-copone" onclick="stopPrizeClose()">
+        <!-- 卡券显示 -->
+        <div class="mePrize-copone-yes-code  mePrize-copone-content rules-show-content">
+          <div>
+            <!-- 卡券图片 -->
+            <div class="mePrize-coupon-code-img">
+              <img src="./image/code-img.png" alt=""/>
+            </div>
+            <div class="mePrize-coupon-code-txt">
+              可线上购买蛋糕、电影票、网络视听会员、图书等
+            </div>
+            <!-- 商家二维码 -->
+            <div class="mePrize-coupon-code" >
+              <p>扫描下方商家二维码 了解更多使用详情</p>
+              <img src="./image/code.png" alt="中福尚优" />
+            </div>
+          </div>
+          <img src="./image/close.png" alt="close" id="close-box" class="close-1" onclick="closeMePrize()"/>
+        </div> 
         <!-- 卡券显示/卡券密码显示 -->
         <div class="mePrize-coupon-ma">
           <span>卡券编码:</span>
@@ -145,6 +160,10 @@
         <div class="mePrize-coupon-ma" >
           <span>卡券密码:</span>
           <p>卡券密码显示</p>
+        </div>
+        <div class="mePrize-coupon-code-explain">
+          <h3>卡券绑定</h3>
+          <p>微信关注中福尚优公众号-进入我的卡券-绑定卡券-输入账号密码绑定卡券-绑定成功</p>
         </div>
         <div class="mePrize-coupon-title" >
           <img src="./image/code-title.png" />
@@ -166,12 +185,12 @@
             </ul>
           </div>
         </div>
-        <!-- 商家二维码 -->
-        <div class="mePrize-coupon-code" >
-          <p>扫描下方商家二维码 了解更多使用详情</p>
-          <img src="./image/code.png" alt="中福尚优" />
-        </div>
+       
         <!-- 非卡券显示 -->
+        <div class="mePrize-copone-content rules-show-content mePrize-copone-no-code" style="display: none;">
+          <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
+          <div class="mePrize-copone-imges"></div>
+        </div>
         <div class="mePrize-coupon-rules-goods-txt" style="display: none;">
           <h3>派送方式</h3>
           <p>直播结束三日后, 银行工作人员将会致电,确认无误后会根据所填地址进行邮寄。</p>
@@ -183,10 +202,11 @@
   </div>
   
   <script src="./js/flexible/flexible.js"></script>
+  <script src="./js/tool/ios.js"></script>
   <script src="./js/tool/CryptoJS.min.js"></script>
   <script src="./js/tool/secret.js"></script>
   <script src="./js/tool/axios.min.js"></script>
-  <!-- 登陆 -->
+  <!-- 登录 -->
   <!-- <script src="./js/home/login.js"></script> -->
   <script>
     // 中奖元素添加
@@ -250,6 +270,16 @@
       noChance.style.display = 'none';
       mePrize.style.display = 'flex';
       document.body.classList.add('body-disabled');
+    }
+    // 我的奖品阻止冒泡
+    function stopPrizeClose() {
+      event.stopPropagation();
+    }
+    // 关闭我的奖品 
+    function closeMePrize() {
+      mePrize.style.display = 'none';
+      MaskDom.style.display = 'none';
+      document.body.classList.remove('body-disabled');
     }
     // 中奖名单 
     let rankingDom = document.getElementById('ranking');

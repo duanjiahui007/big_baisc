@@ -62,7 +62,14 @@ const codeForUserIdCallBack = function(codeForUserIdResult){
 }
 
 const getUserByCode = function(code){
-  alert('send code:' + code,"1211")
+  alert('send code:' + code,"1211");
+  if(!code){
+    if(isAndroid()){
+      window.jsInterface.close()
+    } else {
+      window.webkit.messageHandlers.getCodeForUserId.close();
+    }
+  }
   const instance = axios.create({
     baseURL: 'http://114.116.17.81:8234'
   })

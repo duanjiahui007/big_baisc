@@ -224,11 +224,11 @@ header .header-right i {
 }
 /* 提示消息 */
 .mask-msg {
-  width: 100vw;
+  /* width: 100vw;
   height: 100vh;
   position: fixed;
   top: 0;
-  left: 0;
+  left: 0; */
 }
 .mask-msg-hide {
   width: 0;
@@ -241,7 +241,7 @@ header .header-right i {
   border-radius: .133333rem;
   background-color: rgba(0, 0, 0, 0.6);
   color: #ffffff;
-  position: absolute;
+  position: fixed;
   top: 40%;
   left: 50%;
   transform: translate(-50% , -50%);
@@ -382,6 +382,7 @@ header .header-right i {
    align-items: center;
    justify-content: center;
    flex-direction: column;
+   box-sizing: border-box;
 }
 .mePrize .mePrize-content {
   position: relative;
@@ -414,8 +415,60 @@ header .header-right i {
   border-radius: .266667rem;
   overflow: hidden;
 }
+
+/* 卡券显示 */
+.mePrize .mePrize-copone .mePrize-copone-yes-code {
+  width: 9.2rem;
+  height: 4.6rem;
+}
+.mePrize .mePrize-copone .mePrize-copone-yes-code .close-1 {
+  right: 0;
+  top: -0.9rem;
+}
+.mePrize .mePrize-copone .mePrize-copone-yes-code > div {
+  background-color: #c634ff;
+  width: 100%;
+  height: 100%;
+  border-radius: .133333rem ;
+  position: relative;
+  padding:.133333rem .533333rem .533333rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+.mePrize .mePrize-copone .mePrize-copone-yes-code .mePrize-coupon-code-img {
+  flex: 1 ;
+}
+.mePrize .mePrize-copone .mePrize-copone-yes-code .mePrize-coupon-code-img img {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.mePrize .mePrize-copone .mePrize-copone-yes-code .mePrize-coupon-code-txt {
+  position: absolute;
+  bottom: .133333rem;
+  left: 0;
+  width: 100%;
+  color: #ffffff;
+  font-size: .266667rem;
+  text-align: center;
+}
+.mePrize .mePrize-copone .mePrize-copone-yes-code .mePrize-coupon-code {
+  width: 2.666667rem;
+  font-size: .293333rem;
+  color: #ffffff;
+  line-height: .373333rem;
+  text-align: center;
+  flex-shrink: 0;
+  margin-left: .133333rem;
+}
+.mePrize .mePrize-copone .mePrize-copone-yes-code .mePrize-coupon-code img {
+  width:100%;
+  position: relative;
+}
+
 .mePrize .mePrize-copone .mePrize-coupon-ma {
-  width: 5.866667rem;
+  width: 6.36rem;
   padding: .133333rem;
   background-image: linear-gradient(90deg,#c634ff,#c634ff,#e532ff,#e532ff);
   font-size: .373333rem;
@@ -428,34 +481,42 @@ header .header-right i {
 }
 .mePrize .mePrize-copone .mePrize-coupon-ma span {
   flex-shrink: 0;
-  margin-right: .533333rem;
+  margin-right: .266667rem;
 }
 .mePrize .mePrize-copone .mePrize-coupon-ma p {
   font-size: .346667rem;
   flex: 1;
   letter-spacing: .026667rem;
 }
+.mePrize .mePrize-copone .mePrize-coupon-code-explain {
+  width: 8.706667rem;
+  margin: 0 auto;
+  border-top:.026667rem solid #CB34FF;
+  border-bottom:.026667rem solid #CB34FF;
+  padding: .373333rem .626667rem;
+  margin: .533333rem 0 ;
+  box-sizing: border-box;
+  text-align: center;
+  color: #ffffff;
+  letter-spacing: .026667rem;
+}
+.mePrize .mePrize-copone .mePrize-coupon-code-explain h3 {
+  font-size: .48rem;
+  line-height: .633333rem;
+}
+.mePrize .mePrize-copone .mePrize-coupon-code-explain p {
+  font-size: .32rem;
+  line-height: .42rem;
+}
 .mePrize .mePrize-copone .mePrize-coupon-title img{
   width: 3.6rem;
   margin: 0 auto .133333rem;
 }
 .mePrize .mePrize-copone .mePrize-coupon-rules {
-  width: 8rem;
-  height: 4.8rem;
+  width: 8.706667rem;
+  height: 4.2rem;
   padding: .266667rem;
   margin: 0 auto;
-}
-.mePrize .mePrize-copone .mePrize-coupon-code {
-  font-size: .293333rem;
-  color: #ffffff;
-  line-height: .373333rem;
-  margin: .266667rem auto;
-  text-align: center;
-  width: 2.666667rem;
-}
-.mePrize .mePrize-copone .mePrize-coupon-code img {
-  margin-top: .133333rem;
-  width:100%
 }
 
 
