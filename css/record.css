@@ -1,2 +1,151 @@
 @import "./reset.css";
 
+main {
+  padding: .36rem .68rem 2.933333rem;
+  height: 100%;
+  background-image: url("../image/bj.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center top;
+  box-sizing: border-box;
+  padding-bottom: 2.133333rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-attachment: fixed;
+}
+
+.title {
+  border: .08rem solid #FF8400;
+  color: #FF8400;
+  letter-spacing: .026667rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin:  0 auto .266667rem
+}
+/* 数据统计 */
+.record {}
+
+.record .record-title {
+  width: 2.88rem;
+  height: 1.04rem;
+  font-size: .586667rem;
+}
+
+.record .record-data::before{
+  content: '';
+  display: table;
+}
+.record-data {
+  margin-bottom: .266667rem;
+}
+
+.record-data-show {}
+
+.record-data-show-item {
+  background-color: rgba(0, 0, 0, .4);
+  padding: .506667rem .133333rem .32rem;
+  margin-top: .186667rem;
+}
+/* 单轮数据头部显示 */
+.record-data-show-item .record-data-show-item-t {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: .373333rem;
+}
+.record-data-show-item .record-data-show-item-t > div {
+  flex-basis: 50%;
+  color: #ffffff;
+}
+.record-data-show-item .record-data-show-item-t .order {
+  font-size: .626667rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.record-data-show-item .record-data-show-item-t .time {
+  font-size: .44rem;
+  box-sizing: border-box;
+  padding: 0 .266667rem;
+  display: flex;
+  justify-content: space-between;
+}
+.record-data-show-item .record-data-show-item-t .time >span:nth-of-type(1){
+  flex-shrink: 0;
+}
+/* 单轮数据内容显示 */
+.record-data-show-item .record-data-show-prize {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.record-data-show-item .record-data-show-prize .prize {
+  flex-basis: 48%;
+  height: .96rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .186667rem;
+}
+.record-data-show-item .record-data-show-prize .prize > div {
+  border: .053333rem solid #C834FF;
+  border-radius: .066667rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: .466667rem;
+  color: #ffffff;
+  flex-shrink:0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  white-space: nowrap;
+  padding:0 .133333rem;
+}
+.record-data-show-item .record-data-show-prize .prize .name {
+  width: 2.6rem;
+}
+.record-data-show-item .record-data-show-prize .prize .num {
+  width: 1.3rem;
+} 
+
+/* 没数据显示 */
+
+
+
+/* 共计 */
+.total {}
+
+/* 标题 */
+.total .total-title {
+  width: 1.306667rem;
+  height: .8rem;
+  font-size: .5rem;
+  margin-bottom: .266667rem;
+}
+
+/* 统计 */
+.total .total-data {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.total .total-data > div {
+  margin-bottom: .533333rem;
+  display: flex;
+  color: #ffffff;
+  font-size: .48rem;
+  letter-spacing: .026667rem;
+  flex-basis: 47%;
+  flex-wrap:wrap ;
+}
+.total .total-data .item-key {
+  flex-shrink: 0 ;
+  font-weight: bold;
+  margin-right: .133333rem;
+}
+.total .total-data .item-value {
+
+}

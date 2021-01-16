@@ -4,9 +4,136 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <meta name="viewport" viewport-fit=cover>
+  <link rel="stylesheet" href="./css/record.css">
+  <script src="./js/tool/ios.js"></script>
   <title>数据统计</title>
 </head>
 <body>
-  
+  <main>
+    <!-- 数据统计 -->
+    <div class="record">
+      <!-- 标题 -->
+      <div class="record-title title">
+        数据统计
+      </div>
+      <!-- 统计数据 -->
+      <div class="record-data">
+        <!-- 有数据 -->
+        <div class="record-data-show">
+          <div class="record-data-show-item">
+            <div class="record-data-show-item-t">
+              <div class="order">第一轮</div>
+              <div class="time">
+                <span>抽奖时长:</span>
+                <span>24:58:24</span>
+              </div>
+            </div>
+            <div class="record-data-show-prize">
+              <div class="prize">
+                <div class="name"></div>
+                <div class="num"></div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+            </div>
+          </div>
+          <div class="record-data-show-item">
+            <div class="record-data-show-item-t">
+              <div class="order">第二轮</div>
+              <div class="time">
+                <span>抽奖时长:</span>
+                <span>24:58:24</span>
+              </div>
+            </div>
+            <div class="record-data-show-prize">
+              <div class="prize">
+                <div class="name"></div>
+                <div class="num"></div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+            </div>
+          </div>
+          <div class="record-data-show-item">
+            <div class="record-data-show-item-t">
+              <div class="order">第三轮</div>
+              <div class="time">
+                <span>抽奖时长:</span>
+                <span>24:58:24</span>
+              </div>
+            </div>
+            <div class="record-data-show-prize">
+              <div class="prize">
+                <div class="name"></div>
+                <div class="num"></div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+              <div class="prize">
+                <div class="name">小熊派摩卡咖啡机</div>
+                <div class="num">23232</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 没数据 -->
+        <div class="record-data-hide" style="display:none"></div>
+      </div>
+    </div>
+    <!-- 共计 -->
+    <div class="total">
+      <!-- 标题 -->
+      <div class="total-title title">共计</div>
+      <!-- 内容 -->
+      <div class="total-data">
+        <div class="total-data-item">
+          <div class="item-key">参与人数:</div>
+          <div class="item-value">000000</div>
+        </div>
+        <div class="total-data-item">
+          <div class="item-key">抽奖时间:</div>
+          <div class="item-value">00000</div>
+        </div>
+        <div class="total-data-item">
+          <div class="item-key">已送奖品:</div>
+          <div class="item-value">00000</div>
+        </div>
+        <div class="total-data-item">
+          <div class="item-key">奖品剩余:</div>
+          <div class="item-value">00000</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="./js/flexible/flexible.js"></script>
+  <script src="./js/tool/CryptoJS.min.js"></script>
+  <script src="./js/tool/secret.js"></script>
+  <script src="./js/tool/axios.min.js"></script>
 </body>
 </html>

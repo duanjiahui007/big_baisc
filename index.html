@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <meta name="viewport" viewport-fit=cover>
+  <meta name="apple-mobile-web-app-capable" content="yes"> <!-- apple devices fullscreen -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- iOS -- 让网页内容以应用程序风格显示，并使状态栏透明。 -->
   <title>幸运抽奖大转盘</title>
   <link rel="stylesheet" href="./css/reset.css"/>
   <link rel="stylesheet" href="./css/index.css?v=2"/>
@@ -59,6 +61,10 @@
       <img src="./image/red-box-1.png" alt="红包1" class="red-box-2"/>
       <div class="prize-show-live">
         <span>直播奖品:</span>
+        <div><span>一等奖:</span>小米蓝牙耳机一副。</div>
+        <div><span>二等奖:</span>阿玛尼丝绒哑唇釉一支。</div>
+        <div><span>三等奖:</span>小熊咖啡机一台。</div>
+        <div><span>四等奖:</span>蛋糕、电影、网络视听50元通用券一张。</div>
       </div>  
     </div>      
   </main>
@@ -200,14 +206,32 @@
       
     </div>
   </div>
+  <!-- loading -->
+  <div class="loading">
+    <div class="loading-content">
+    </div>
+  </div>
   
   <script src="./js/flexible/flexible.js"></script>
   <script src="./js/tool/ios.js"></script>
   <script src="./js/tool/CryptoJS.min.js"></script>
   <script src="./js/tool/secret.js"></script>
   <script src="./js/tool/axios.min.js"></script>
+  <script>
+    (function () {
+      let loadingBox = document.querySelector('.loading-content');
+      let rotate = 360/6;
+      for(let i = 0 ; i<6 ; i++){
+        let isBool = document.createElement('span');
+        isBool.style.animationDelay =140*i +'ms';
+        isBool.style.opacity = 1-(i*0.1)
+        loadingBox.appendChild(isBool);
+      }
+    })()
+  </script>
   <!-- 登录 -->
   <!-- <script src="./js/home/login.js"></script> -->
+
   <script>
     // 中奖元素添加
     let domPie = document.getElementById('pieDisc');
@@ -221,8 +245,10 @@
       let WIDTH = R*Math.sin(deg);
       for(let i = 0 ; i<w ; i++){
         let rotateDeg = Deg_t*i;
-        let html = `<span>谢谢参与${i}</span>
-                  <img src="./image/thanks.png" alt="谢谢参与" />`
+        let images = '0'+(i+1)+'.png'
+        if(i==5) images = '05.png'
+        let html = `<span>谢谢ddd参与${i}</span>
+                  <img src="./image/${images}" alt="谢谢参与" />`
         let domItem = document.createElement('div');
         domItem.classList.add('pie-prize');
         domItem.style.width = WIDTH-30 + "px";
