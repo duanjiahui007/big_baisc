@@ -248,11 +248,13 @@ header .logo img{
 }
 .mask-content-text .mask-content-text-item .mask-item-stock {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 2.666667rem;
   padding: 0 .133333rem;
   line-height: 1;
   box-sizing: border-box;
   border-color: transparent;
+}
+.mask-content-text .mask-content-text-item .mask-item-stock > span:nth-of-type(1){
+  margin-right: .133333rem;
 }

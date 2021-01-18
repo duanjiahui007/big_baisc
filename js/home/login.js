@@ -75,11 +75,11 @@ const getUserByCode = function(code){
   })
   // const baseUrl = 'https://game.cebbank-xa.com/bankconvert'
   instance({
-        url: `/login/${code}`,
-        method: 'get'
-      }).then(response => {
-        alert(JSON.stringify(response),"233")
-      })
+    url: `/login/${code}`,
+    method: 'get'
+  }).then(response => {
+    alert(JSON.stringify(response),"233")
+  })
 }
 getAuth();
   

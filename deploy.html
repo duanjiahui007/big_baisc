@@ -5,9 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <meta name="viewport" viewport-fit=cover>
   <link rel="stylesheet" href="./css/deploy.css"/>
+  <link rel="stylesheet" href="./css/loading.css"/>
   <title>游戏配置</title>
 </head>
 <body>
+    <!-- loading -->
+    <div class="loading">
+      <div class="loading-content">
+      </div>
+    </div>
+
     <main>
       <!-- logo -->
       <header>
@@ -16,7 +23,7 @@
         </div>
       </header>
       <!-- 配置内容 -->
-      <div class="tool">
+      <div class="tool" id="toolBox">
         <div class="tool-content">
           <!-- 标题 -->
           <div class="tool-title">
@@ -51,7 +58,7 @@
           <div class="tool-switch" onclick="move()" >
             <img src="./image/open.png" alt="开" class="tool-open tool-on-off "/>
             <img src="./image/red-close.png" alt="关" class="tool-close tool-on-off tool-show">
-            <img src="./image/switch.png" class="tool-btn" data-open=false/>
+            <img src="./image/switch.png" class="tool-btn" data-open='false'/>
           </div>
         </div>
       </div>
@@ -63,6 +70,7 @@
       <a href="./record.html" class="tool-plain-btn tool-census-btn">数据统计</a>
 
     </main>
+    <!-- 遮罩 -->
     <div class="mask" id="maskId" >
       <div class="mask-content">
         <img src="./image/close.png" alt="close" class="mask-close" onclick="closeTool()"/>
@@ -70,52 +78,97 @@
         <div class="mask-content-text">
           <div class="mask-content-text-item">
             <div class="mask-item-name mask-item-style">
-              小米蓝牙耳机
+              ????
             </div>
             <input class="mask-item-num  mask-item-style" type="number" />
             <div class="mask-item-stock  mask-item-style">
               <span>剩余:</span>
-              <span>2500</span>
+              <span>????</span>
             </div>
           </div>
           <div class="mask-content-text-item">
             <div class="mask-item-name mask-item-style">
-              小米蓝牙耳机
+              ????
             </div>
             <input class="mask-item-num  mask-item-style" type="number" />
             <div class="mask-item-stock  mask-item-style">
               <span>剩余:</span>
-              <span>2500</span>
+              <span>????</span>
             </div>
           </div>
           <div class="mask-content-text-item">
             <div class="mask-item-name mask-item-style">
-              小米蓝牙耳机
+              ????
             </div>
             <input class="mask-item-num  mask-item-style" type="number" />
             <div class="mask-item-stock  mask-item-style">
               <span>剩余:</span>
-              <span>2500</span>
+              <span>????</span>
             </div>
           </div>
           <div class="mask-content-text-item">
             <div class="mask-item-name mask-item-style">
-              小米蓝牙耳机
+              ????
             </div>
             <input class="mask-item-num  mask-item-style" type="number" />
             <div class="mask-item-stock  mask-item-style">
               <span>剩余:</span>
-              <span>2500</span>
+              <span>????</span>
             </div>
           </div>
         </div>
-        <div class="mask-content-btn tool-plain-btn">确认</div>
+        <div class="mask-content-btn tool-plain-btn" onclick="confirmTool()">确认</div>
       </div>
+    </div>
+    <!-- 消息提示 -->
+    <div class="mask-msg mask-msg-hide">
+      <div class="msg-txt">提示消息</div>
     </div>
     <script src="./js/flexible/flexible.js"></script>
     <script src="./js/tool/ios.js"></script>
+    <script src="./js/loading/index.js"></script>
+    <script src="./js/tool/CryptoJS.min.js"></script>
+    <script src="./js/tool/secret.js"></script>
+    <script src="./js/tool/axios.min.js"></script>
+    <script src="./js/deploy/index.js"></script>
     <script>
-    
+
+      // --------- 全局变量 ---------
+        let prizeData = [] ; // 当前活动奖品信息
+        let toolPrizeNum = []
+        // let 
+      // ----------------------------
+      window.onload = () =>{
+        document.querySelector('.loading').style.display = 'none';
+        getIsPrize().then(res=>{
+          let isData = JSON.parse(Decrypt(res.data))
+          console.log(isData)
+          prizeData = isData.data;
+          readToolWindow();
+        }).catch(err=>{
+          console.log(err)
+        })
+      }
+      // 将数据渲染到配置奖品弹框
+      function readToolWindow() {
+        let allHtml = '';
+        prizeData.forEach(items => {
+          let html = `<div class="mask-content-text-item">
+                        <div class="mask-item-name mask-item-style">
+                          ${items.name}
+                        </div>
+                        <input class="mask-item-num  mask-item-style" type="number" data-id = '${items.id}' onchange="selectInput(${items.inventory})" />
+                        <div class="mask-item-stock  mask-item-style">
+                          <span>剩余:</span>
+                          <span>${items.inventory}</span>
+                        </div>
+                      </div>`
+          allHtml += html
+        })
+
+        document.querySelector('.mask-content-text').innerHTML = allHtml;
+
+      }
       // 开关
       function move() {
         let toolBtn = document.querySelector('.tool-btn');
@@ -127,21 +180,32 @@
           toolBtn.setAttribute('data-open',true);
           open.classList.add('tool-show');
           close.classList.remove('tool-show');
+          // loading
+          document.querySelector('.loading').style.display = 'block';
+          setTimeout(()=>{
+            document.querySelector('.loading').style.display = 'none';
+          },2000)
         } else{
           // 关闭
           toolBtn.style.transform = 'translateX(0)';
           toolBtn.setAttribute('data-open',false);
           open.classList.remove('tool-show');
           close.classList.add('tool-show');
+
+          // loading
+          document.querySelector('.loading').style.display = 'block';
+          setTimeout(()=>{
+            document.getElementById('toolBox').style.display = 'none';
+            document.getElementsByTagName('header')[0].classList.add('header-no-tool');
+            document.querySelector('.loading').style.display = 'none';
+          },2000)
+          
         }
       }
 
       // 打开抽奖配置
       let mask = document.getElementById('maskId');
       function  startTool() {
-        // mask.addEventListener('click',function(event) {
-        //   event.currentTarget.style.display = 'none';
-        // },)
         document.body.classList.add('body-disabled');
         mask.style.display = 'block'
       }
@@ -149,6 +213,42 @@
       function closeTool() {
         document.body.classList.remove('body-disabled');
         mask.style.display = 'none'
+      }
+
+      // 确认抽奖配置
+      function confirmTool() {
+        let msg = 'loading';
+        let a = new getMessage(msg,true,true);
+        a.show();
+        setTimeout(()=>{
+          a.close();
+          let b = new getMessage("数据有误",false,false,2.5)
+        },3000)
+        console.log(a)
+      }
+
+      // 输入值判断
+      function selectInput(val){
+        let ev = event.target || event.srcElement;
+        let value = Number(ev.value);
+        if(value !== 'NaN'){
+          if(value>val){
+            let b = new getMessage("配置数量不能大于剩余数量！",false,false);
+            b.show();
+          }
+        }else {
+          let b = new getMessage("输入框内只能填写数字！",false,false);
+          b.show();
+        }
+      }
+      // 获取配置数量数据
+      // ---- 保留 ---
+      function getToolNumData(id,val) {
+        this.prizeData.forEach(items=>{
+          if(items.id === id){
+            // this.
+          }
+        })
       }
     </script>
 </body>

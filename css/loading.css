@@ -1,0 +1,110 @@
+/* loading */
+.loading {
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.loading .loading-content {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 3.333333rem;
+  height: 3.333333rem;
+  /* animation: Loading linear 2.5s infinite; */
+}
+.loading .loading-content span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: 0 auto;
+  display: block;
+  width: .346667rem;
+  height:.346667rem;
+  border-radius: 50%;
+  background-color: rgb(41, 204, 247);;
+  transform-origin: center 1.666667rem;
+  animation:Loading 2s ease infinite;
+}
+@keyframes Loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+    width: .5rem;
+    height: .5rem;
+  }
+}
+
+/* 提示消息 */
+.mask-msg-all {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow:hidden;
+  z-index: 66;
+}
+.mask-msg-hide {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+/* 提示文字 */
+.mask-msg .msg-txt{
+  border-radius: .133333rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50% , -50%);
+  opacity: 0;
+  overflow: hidden;
+  transition: all 330ms ease;
+  z-index: 88;
+}
+.mask-msg .msg-txt-show {
+  opacity: 1;
+  padding: .186667rem .266667rem;
+}
+
+.circular {
+    width: 1.333333rem;
+    height: 1.333333rem;
+    stroke:rgb(41, 204, 247);
+    stroke-width: 3px;
+    stroke-dasharray: 90,150;
+    animation: loading-rotate 2s ease-in-out infinite;
+}
+.circular .path {
+  animation: loading-dash 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-dash {
+  0% {
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0;
+  } 
+  50% {
+      stroke-dasharray: 90,150;
+      stroke-dashoffset: -40px;
+  }
+  100% {
+      stroke-dasharray: 90,150;
+      stroke-dashoffset: -120px;
+  }
+}
+@keyframes loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}

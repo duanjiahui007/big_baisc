@@ -8,9 +8,16 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- iOS -- 让网页内容以应用程序风格显示，并使状态栏透明。 -->
   <title>幸运抽奖大转盘</title>
   <link rel="stylesheet" href="./css/reset.css"/>
+  <link rel="stylesheet" href="./css/loading.css"/>
   <link rel="stylesheet" href="./css/index.css?v=2"/>
 </head>
 <body>
+   <!-- loading -->
+   <div class="loading">
+    <div class="loading-content">
+    </div>
+  </div>
+
   <main>
     <!-- logo -->
     <header>
@@ -180,14 +187,15 @@
             <!-- <h3>活动说明:</h3> -->
             <ul>
               <li class="li-title">
-                方式一: 线下店内刷卡购买
-              </li>
-              <li class="li-content">持卡至陕西省内米旗,御品轩,帕芙林,面包新语,塞拉维等5个品牌下所有门店直接刷卡支付,店内产品没有限制。</li>
-              
-              <li class="li-title">
-                方式二: 线上福利平台
+                方式一: 线上福利平台
               </li>
               <li class="li-content">微信扫描卡背中福尚优公众号并关注-进入我的卡券-绑定卡券-输入账号密码绑定卡券-绑定成功</li>
+              <li class="li-title">
+                方式二: 线下店内购买
+              </li>
+              <li class="li-content">持绑定卡券至陕西省内米旗,御品轩,帕芙琳,面包新语,塞拉维的所有门店,可用微信扫描商户二维码进行购买,店内产品没有限制。</li>
+              
+              
             </ul>
           </div>
         </div>
@@ -206,31 +214,19 @@
       
     </div>
   </div>
-  <!-- loading -->
-  <div class="loading">
-    <div class="loading-content">
-    </div>
-  </div>
+ 
   
   <script src="./js/flexible/flexible.js"></script>
   <script src="./js/tool/ios.js"></script>
+  <script src="./js/loading/index.js"></script>
   <script src="./js/tool/CryptoJS.min.js"></script>
   <script src="./js/tool/secret.js"></script>
   <script src="./js/tool/axios.min.js"></script>
-  <script>
-    (function () {
-      let loadingBox = document.querySelector('.loading-content');
-      let rotate = 360/6;
-      for(let i = 0 ; i<6 ; i++){
-        let isBool = document.createElement('span');
-        isBool.style.animationDelay =140*i +'ms';
-        isBool.style.opacity = 1-(i*0.1)
-        loadingBox.appendChild(isBool);
-      }
-    })()
-  </script>
+ 
   <!-- 登录 -->
   <!-- <script src="./js/home/login.js"></script> -->
+  <!-- 首页api -->
+  <script src="./js/home/index.js"></script>
 
   <script>
     // 中奖元素添加
@@ -246,9 +242,10 @@
       for(let i = 0 ; i<w ; i++){
         let rotateDeg = Deg_t*i;
         let images = '0'+(i+1)+'.png'
-        if(i==5) images = '05.png'
+        if(i==5) images = '05.png';
         let html = `<span>谢谢ddd参与${i}</span>
                   <img src="./image/${images}" alt="谢谢参与" />`
+        
         let domItem = document.createElement('div');
         domItem.classList.add('pie-prize');
         domItem.style.width = WIDTH-30 + "px";
@@ -400,8 +397,9 @@
       }
     }
     
-    
-
+    window.onload = () =>{
+      document.querySelector('.loading').style.display = 'none';
+    }
 
 
   </script>

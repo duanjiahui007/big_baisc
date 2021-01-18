@@ -6,9 +6,15 @@
   <meta name="viewport" viewport-fit=cover>
   <title>大转盘</title>
   <link rel="stylesheet" href="./css/reset.css"/>
+  <link rel="stylesheet" href="./css/loading.css">
   <link rel="stylesheet" href="./css/index.css"/>
 </head>
 <body>
+   <!-- loading -->
+   <div class="loading">
+    <div class="loading-content">
+    </div>
+  </div>
   <main>
     <!-- logo -->
     <header class="add-fill-header">
@@ -66,6 +72,7 @@
   </div>
   <script src="./js/tool/ios.js"></script>
   <script src="./js/flexible/flexible.js"></script>
+  <script src="./js/loading/index.js"></script>
   <script src="./js/tool/CryptoJS.min.js"></script>
   <script src="./js/tool/secret.js"></script>
   <script src="./js/tool/axios.min.js"></script>
@@ -73,28 +80,11 @@
   <script src="./js/picker/city.js"></script>
   <script src="./js/picker/index.js"></script>
   <script>
-    {
-      // 消息提示
-      function  getMessage(msg,delayed=1.5,isAll=false) {
-        let msg_dom_txt = document.querySelector('.msg-txt');
-        let msg_dom_box = document.querySelector('.mask-msg');
-        if(isAll){
-          msg_dom_box.classList.add('mask-msg-all');
-        }
-        msg_dom_txt.innerHTML = msg;
-        msg_dom_box.classList.remove('mask-msg-hide');
-        msg_dom_txt.classList.add('msg-txt-show');
-        setTimeout(()=>{
-          msg_dom_txt.classList.remove('msg-txt-show')
-          setTimeout(()=>{
-            msg_dom_box.classList.add('mask-msg-hide')
-            if(isAll){
-              msg_dom_box.classList.remove('mask-msg-all');
-            }
-          },330)
-        },delayed*1000)
-      }
+    // 关闭loading
+    window.onload = () =>{
+      document.querySelector('.loading').style.display = 'none';
     }
+    
 
     {
       // 点击提交按钮
