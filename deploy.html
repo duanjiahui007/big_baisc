@@ -17,42 +17,42 @@
 
     <main>
       <!-- logo -->
-      <header>
+      <header class="header-no-tool">
         <div class="logo">
           <img src="./image/logo.png" alt="光大银行"/>
         </div>
       </header>
       <!-- 配置内容 -->
-      <div class="tool" id="toolBox">
+      <div class="tool" id="toolBox" style="display: none;">
         <div class="tool-content">
           <!-- 标题 -->
           <div class="tool-title">
             <img src="./deploy/prize-title.png" alt="本轮奖品设置" />
           </div>
           <!-- 内容 -->
-          <div class="tool-cont">
+          <div class="tool-cont" id="toolContId">
             <div class="tool-cont-item">
-              <div class="tool-cont-item-name">奖品名称</div>
-              <div class="tool-cont-item-num">50033</div>
+              <div class="tool-cont-item-name">????</div>
+              <div class="tool-cont-item-num">?????</div>
             </div>
             <div class="tool-cont-item">
-              <div class="tool-cont-item-name">奖品名称</div>
-              <div class="tool-cont-item-num">50033</div>
+              <div class="tool-cont-item-name">????</div>
+              <div class="tool-cont-item-num">?????</div>
             </div>
             <div class="tool-cont-item">
-              <div class="tool-cont-item-name">奖品名称</div>
-              <div class="tool-cont-item-num">50033</div>
+              <div class="tool-cont-item-name">????</div>
+              <div class="tool-cont-item-num">?????</div>
             </div>
             <div class="tool-cont-item">
-              <div class="tool-cont-item-name">奖品名称</div>
-              <div class="tool-cont-item-num">50033</div>
+              <div class="tool-cont-item-name">????</div>
+              <div class="tool-cont-item-num">?????</div>
             </div>
             
           </div>
           <!-- 抽奖时长 -->
           <div class="tool-time">
             <span>抽奖时间:</span>
-            <span>5445分钟</span>
+            <span class="tool-time-show"></span>
           </div>
           <!-- 开关 -->
           <div class="tool-switch" onclick="move()" >
@@ -135,19 +135,49 @@
 
       // --------- 全局变量 ---------
         let prizeData = [] ; // 当前活动奖品信息
-        let toolPrizeNum = []
-        // let 
+        let toolPrizeNum = [] ; // 存储配置信息
+        let activeTime = null ; //活动开始时间
+        let nowTime = null ;  //时间定时器
       // ----------------------------
       window.onload = () =>{
-        document.querySelector('.loading').style.display = 'none';
+        getToolPrizeData();
+      }
+
+      function  getToolPrizeData() {
+        // 获取当前活动奖品信息
         getIsPrize().then(res=>{
+          document.querySelector('.loading').style.display = 'none';
           let isData = JSON.parse(Decrypt(res.data))
           console.log(isData)
           prizeData = isData.data;
+          saveToolData(prizeData,toolPrizeNum);
           readToolWindow();
         }).catch(err=>{
-          console.log(err)
+          console.log(Decrypt(err.data))
         })
+
+        // 获取当前配置信息 type 1 无图  2有图
+        getToolPrize('1').then(res => {
+          let isData = JSON.parse(Decrypt(res.data));
+          if(isData.code == 0 && isData.data.length>0){
+            console.log(isData)
+            readToolShow(isData.data);
+            moveSwitch(isData.data[0].status)
+          }
+        })
+      }
+
+      // 将数据渲染到当前配置展示
+      function readToolShow(arr) {
+        let showHtml = '';
+        arr.forEach(item=>{
+          let itemHtml = `<div class="tool-cont-item">
+              <div class="tool-cont-item-name">${item.name}</div>
+              <div class="tool-cont-item-num">${item.prizeNum}</div>
+            </div>`
+            showHtml+=itemHtml;
+        })
+        document.getElementById('toolContId').innerHTML = showHtml;
       }
       // 将数据渲染到配置奖品弹框
       function readToolWindow() {
@@ -157,7 +187,7 @@
                         <div class="mask-item-name mask-item-style">
                           ${items.name}
                         </div>
-                        <input class="mask-item-num  mask-item-style" type="number" data-id = '${items.id}' onchange="selectInput(${items.inventory})" />
+                        <input class="mask-item-num  mask-item-style" type="number" oninput="SetInput()" data-id = '${items.id}' onblur="selectInput(${items.inventory})" />
                         <div class="mask-item-stock  mask-item-style">
                           <span>剩余:</span>
                           <span>${items.inventory}</span>
@@ -165,43 +195,121 @@
                       </div>`
           allHtml += html
         })
-
         document.querySelector('.mask-content-text').innerHTML = allHtml;
-
       }
-      // 开关
+      // 显示本轮抽奖配置显示
+      function openNewPrize(){
+        document.getElementById('toolBox').style.display = 'block';
+        document.getElementsByTagName('header')[0].classList.remove('header-no-tool');
+      }
+      // 关闭本轮抽奖配置显示 
+      function closeNewPrize(){ 
+        document.getElementById('toolBox').style.display = 'none';
+        document.getElementsByTagName('header')[0].classList.add('header-no-tool');
+        document.querySelector('.loading').style.display = 'none';
+      }
+      // 开关   <可优化>
       function move() {
         let toolBtn = document.querySelector('.tool-btn');
         let open = document.querySelector('.tool-open');
         let close = document.querySelector('.tool-close');
         if(toolBtn.getAttribute('data-open')=== 'false'){
           // 开启
-          toolBtn.style.transform = 'translateX(1.66667rem)';
           toolBtn.setAttribute('data-open',true);
+          toolBtn.style.transform = 'translateX(1.66667rem)';
           open.classList.add('tool-show');
           close.classList.remove('tool-show');
           // loading
           document.querySelector('.loading').style.display = 'block';
-          setTimeout(()=>{
-            document.querySelector('.loading').style.display = 'none';
-          },2000)
+          startNow();
         } else{
           // 关闭
           toolBtn.style.transform = 'translateX(0)';
           toolBtn.setAttribute('data-open',false);
           open.classList.remove('tool-show');
           close.classList.add('tool-show');
-
           // loading
           document.querySelector('.loading').style.display = 'block';
-          setTimeout(()=>{
-            document.getElementById('toolBox').style.display = 'none';
-            document.getElementsByTagName('header')[0].classList.add('header-no-tool');
-            document.querySelector('.loading').style.display = 'none';
-          },2000)
-          
+          endNow();
         }
       }
+      // 开关移动
+      function moveSwitch(val) {
+        let toolBtn = document.querySelector('.tool-btn');
+        let open = document.querySelector('.tool-open');
+        let close = document.querySelector('.tool-close');
+        if(val == 0) { toolBtn.setAttribute('data-open',false); openNewPrize();}
+        if(val == 1 ){ toolBtn.setAttribute('data-open',true);showStartTime(); openNewPrize();}
+        if(val == 2) { closeTool(); return;}
+        if(toolBtn.getAttribute('data-open')=== 'true'){
+          // 开启
+          toolBtn.style.transform = 'translateX(1.66667rem)';
+          open.classList.add('tool-show');
+          close.classList.remove('tool-show');
+        } else{
+          // 关闭
+          toolBtn.style.transform = 'translateX(0)';
+          open.classList.remove('tool-show');
+          close.classList.add('tool-show');
+        }
+      }
+      
+      //开启本轮抽奖请求
+      function startNow(){
+        let status = 1 ;
+        startOREnd(status).then(res=>{
+          let cont = Decrypt(res.data)
+          console.log(cont,"√")
+          document.querySelector('.loading').style.display = 'none';
+          showStartTime();
+        })
+      }
+      // 关闭本轮抽奖请求
+      function endNow() {
+        let status = 2 ;
+        startOREnd(status).then(res=>{
+          let cont = Decrypt(res.data)
+          console.log(cont,"❎")
+          closeNewPrize();
+          toolPrizeNum = [];//存储活动奖品信息清空
+          getToolPrizeData();
+          hideEndTime(); //关闭活动时间计时
+        })
+      }
+
+      // 抽奖时间
+      function showStartTime(){
+        let timeContent = document.querySelector('.tool-time-show');
+        let startTime = 0 ; 
+        if(activeTime) {
+          let nowIs = new Date();
+          console.log()
+          startTime = 100
+        };
+        timeContent.innerText ='0 分 0 秒';
+        nowTime = setInterval(() => {
+          startTime++; 
+          timeContent.innerText = secondsFormat(startTime) 
+        }, 1000);
+      }
+      function  hideEndTime() {
+        let timeContent = document.querySelector('.tool-time-show');
+        clearInterval(nowTime);
+        timeContent.innerText = '';
+      }
+      // 时分秒转化
+      function secondsFormat( s ) { 
+          var day = Math.floor( s/ (24*3600) ); // Math.floor()向下取整 
+          var hour = Math.floor( (s - day*24*3600) / 3600); 
+          var minute = Math.floor( (s - day*24*3600 - hour*3600) /60 ); 
+          var second = s - day*24*3600 - hour*3600 - minute*60; 
+          return  minute + " 分 " + second + " 秒"; 
+      }
+      // 获取开始抽奖时间
+      function getStartTime(){
+       
+      }
+
 
       // 打开抽奖配置
       let mask = document.getElementById('maskId');
@@ -214,42 +322,89 @@
         document.body.classList.remove('body-disabled');
         mask.style.display = 'none'
       }
-
       // 确认抽奖配置
       function confirmTool() {
-        let msg = 'loading';
-        let a = new getMessage(msg,true,true);
-        a.show();
-        setTimeout(()=>{
-          a.close();
-          let b = new getMessage("数据有误",false,false,2.5)
-        },3000)
-        console.log(a)
+        let bool = toolPrizeNum.some(item=>{
+          return !item.prizeNum || item.prizeNum == null || item.prizeNum == 0
+        })
+        if(!bool){
+          let a = new getMessage('loading',true,true);
+          a.show();
+          let obj = { activityPrizes :[] };
+          obj.activityPrizes = [...toolPrizeNum];
+          ToolYes(obj).then(res=>{
+            let isData = JSON.parse(Decrypt(res.data));
+            console.log(Decrypt(res.data));
+            a.msg = isData.message;
+            a.loading = false;
+            a.isAll = false;
+            a.show();
+            if(isData.code == 0 ) {
+              toolPrizeNum = [];
+              closeTool();
+              getToolPrizeData();
+            }
+          })
+        }else{
+          let b = new getMessage("配置填写有误,请填写完整后再提交!",false,false,2);
+          b.show();
+        }
+        
       }
 
+
+
+
+// ----------------------------- 工具函数 --------------------------------------
+      // 预存储活动奖品信息（用于配置）<-- 数据拷贝 -->
+      function saveToolData(CopyArry,NewArry) {
+        for(let i = 0 ; i < CopyArry.length ; i++) {
+          let datas = {
+                  grade:CopyArry[i].grade,
+                  id:CopyArry[i].id,
+                  name:CopyArry[i].name,
+                  orderNum:i+1,
+              }
+          NewArry.push(datas);
+        }
+      }
+      // 获取配置数量数据
+      function getToolNumData(id,val) {
+        toolPrizeNum.forEach((items,index)=>{
+          if(items.id == id){
+            items.prizeNum = val;
+          }
+        })
+      }
       // 输入值判断
       function selectInput(val){
         let ev = event.target || event.srcElement;
         let value = Number(ev.value);
-        if(value !== 'NaN'){
-          if(value>val){
-            let b = new getMessage("配置数量不能大于剩余数量！",false,false);
-            b.show();
-          }
-        }else {
-          let b = new getMessage("输入框内只能填写数字！",false,false);
+        let reg = /^[0-9]+$/;
+        if(!reg.test(value)){
+          let b = new getMessage("输入框内只能填写整数！",false,false);
           b.show();
+          getToolNumData(ev.dataset.id,null);
+          return ;
+        }
+        if(value>val){
+          let b = new getMessage("配置数量不能大于剩余数量！",false,false);
+          b.show();
+          getToolNumData(ev.dataset.id,null);
+          return ;
+        }
+        getToolNumData(ev.dataset.id,value);
+      }
+      // 限制输入框长度
+      function SetInput(){
+        let ev =  event.target || event.srcElement;
+        if(ev.value.length > 4 ){
+          ev.value = ev.value.slice(0,4);
+        }else if(ev.value == ''){
+          ev.value = '';
         }
       }
-      // 获取配置数量数据
-      // ---- 保留 ---
-      function getToolNumData(id,val) {
-        this.prizeData.forEach(items=>{
-          if(items.id === id){
-            // this.
-          }
-        })
-      }
+// ----------------------------- 工具函数 --------------------------------------  
     </script>
 </body>
 </html>

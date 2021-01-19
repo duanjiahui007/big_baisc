@@ -229,22 +229,46 @@
   <script src="./js/home/index.js"></script>
 
   <script>
+     window.onload = () =>{
+      document.querySelector('.loading').style.display = 'none';
+      getPieList();
+    }
+
+    // 转盘部分 
+    let pieData = [];
+
+    // 获取转盘奖品列表
+    function getPieList(){
+      getWheelPrize('2').then(res => {
+        let datas = JSON.parse(Decrypt(res.data));
+        if(datas.code == '0' ){
+          pieData = datas.data ;
+        }
+      })
+    }
+    
     // 中奖元素添加
     let domPie = document.getElementById('pieDisc');
     
     createPrizeList(domPie,6);
     // 生成奖品
-    function createPrizeList (domPie,w) {
+    function createPrizeList (domPie,w,data) {
       let R = Number(window.getComputedStyle(domPie,null).width.slice(0, -2));
       let deg = Math.PI/w ;
       let Deg_t = 360/w ;
       let WIDTH = R*Math.sin(deg);
       for(let i = 0 ; i<w ; i++){
         let rotateDeg = Deg_t*i;
-        let images = '0'+(i+1)+'.png'
-        if(i==5) images = '05.png';
-        let html = `<span>谢谢ddd参与${i}</span>
-                  <img src="./image/${images}" alt="谢谢参与" />`
+        let images,html;
+        if(!data){
+          images = '0'+(i+1)+'.png'
+          if(i==5) images = '05.png';
+          html = `<span>谢谢ddd参与${i}</span>
+                  <img src="./image/${images}" />`
+        }else{
+        
+        }
+        
         
         let domItem = document.createElement('div');
         domItem.classList.add('pie-prize');
@@ -397,9 +421,7 @@
       }
     }
     
-    window.onload = () =>{
-      document.querySelector('.loading').style.display = 'none';
-    }
+   
 
 
   </script>

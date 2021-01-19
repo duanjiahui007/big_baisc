@@ -69,12 +69,16 @@
   transform: translate(-50% , -50%);
   opacity: 0;
   overflow: hidden;
-  transition: all 330ms ease;
-  z-index: 88;
+  text-align: center;
+  font-size: .373333rem;
+  line-height: .48rem;
+  transition: opacity 330ms ease;
+  padding: .186667rem .266667rem;
+  z-index: -99;
 }
 .mask-msg .msg-txt-show {
   opacity: 1;
-  padding: .186667rem .266667rem;
+  z-index: 88;
 }
 
 .circular {
