@@ -103,7 +103,8 @@ header .header-right i {
   right: 0;
 }
 .pie-baic .pie .pie-prize span {
-  font-size: .426667rem;
+  font-size: .373333rem;
+  font-weight: 500;
   line-height: .533333rem;
   color: #ffffff;
   margin-bottom: .266667rem;
@@ -385,6 +386,10 @@ header .header-right i {
 .ranking-show .ranking-show-content .ranking-show-list .list-tip span{
   flex: 1;
   text-align: center;
+  flex-basis: 30%;
+}
+.ranking-show .ranking-show-content .ranking-show-list .list-tip span:nth-of-type(1){
+  flex-basis: 25%;
 }
 .ranking-show .ranking-show-content .ranking-show-list ul {
   margin: 0;
@@ -407,6 +412,15 @@ header .header-right i {
   line-height: .8rem;
   font-size: .426667rem;
   text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 .133333rem;
+  flex-basis:30% ;
+}
+.ranking-show .ranking-show-content .ranking-show-list ul li span:nth-of-type(1){
+  flex-basis: 25%;
 }
 /* 我的奖品 */
 .mePrize {
@@ -452,6 +466,12 @@ header .header-right i {
   background-image: linear-gradient(#c634ff,#c634ff,#e532ff,#e532ff);
   border-radius: .266667rem;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#noCodeImage > img {
+  height: 80%;
 }
 
 /* 卡券显示 */
@@ -624,6 +644,11 @@ header .header-right i {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+}
+.no-chance .no-chance-content .no-chance-txt > p {
+  color: #fde934;
+  font-size: .373333rem;
 }
 .no-chance > img {
   position: absolute;
@@ -677,12 +702,14 @@ header .header-right i {
   height: 4.066667rem;
   border-radius: .266667rem;
   background-color: #C634FF;
-  padding: .346667rem;
+  padding: .133333rem;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .add-fill-show .add-fill-show-box .add-fill-show-item > img {
-  width: 100%;
-  height: 100%;
+  height:100%;
 }
 
 /* 地址填写 */

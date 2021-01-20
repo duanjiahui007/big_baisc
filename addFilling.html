@@ -36,17 +36,17 @@
    <div class="add-fill-address">
      <div class="add-fill-address-item">
        <label for="name">姓名:</label>
-       <input id="name" name="name" type="text"  />
+       <input id="name" name="name" type="text" autofocus />
      </div>
      <div class="add-fill-address-item">
       <label for="phone">电话:</label>
       <input id="phone"  type="number"  />
     </div>
-    <div class="add-fill-address-item">
+    <div class="add-fill-address-item" id='cirtyBox'>
       <label for="cirty">省市区:</label>
       <input id="cirty" type="text"  readonly/>
     </div>
-    <div class="add-fill-address-item">
+    <div class="add-fill-address-item" id="addressBox">
       <label for="address">详细地址:</label>
       <input id="address" type="text"  />
     </div>
@@ -79,33 +79,105 @@
   <script src="./js/picker/picker.min.js"></script>
   <script src="./js/picker/city.js"></script>
   <script src="./js/picker/index.js"></script>
+  <script src="./js/home/index.js"></script>
   <script>
     // 关闭loading
     window.onload = () =>{
-      document.querySelector('.loading').style.display = 'none';
+      getIsPrizeMsg();
     }
-    
+    // 全局变量
+    let userName = '';
+    let userPhone = '';
+    let userCity = '';
+    let userAddress = '';
+    let isQuan = false;
 
-    {
+
+    let nameDom = document.getElementById('name');
+    let phoneDom = document.getElementById('phone');
+    let cirtyDom = document.getElementById('cirty');
+    let addressDom = document.getElementById('address');
+    let cirtyDomBox = document.getElementById('cirtyBox');
+    let addressDomBox = document.getElementById('addressBox');
+
+
+      let msg = new getMessage('');
       // 点击提交按钮
       function submitData() {
-        // let submitMask = document.getElementById('submit-box');
-        // submitMask.classList.add('submit-mask')
-        getMessage('66666',2);
-        // setTimeout(()=>{
-        //   location.href="http://192.168.0.193:5500/index.html"
-        // },200)
+        if(postSubmit()){
+          let obj =  isQuan ? { name: userName, tel: userPhone } : { address: userAddress, city: userCity, name: userName, tel: userPhone};
+          userSubmutHttp(obj);
+        }else{
+          msg.msg = '请将信息填写完整!'
+          msg.show();
+        }
       }
-    }
 
-    {
+      
+  
+
+    
       // 关闭提交成功 => 跳转主页
       function isClose() {
         let submitMask = document.getElementById('submit-box');
         submitMask.classList.remove("submit-mask");
         location.href = './index.html'
       }
-    }
+
+      // 获取当前中奖信息
+      function getIsPrizeMsg() {
+        userPrize().then(res=>{
+          let datas = JSON.parse(Decrypt(res.data))
+          let hasPrize = datas.data[0];
+          console.log(JSON.parse(Decrypt(res.data)),"中奖信息");
+          if(hasPrize.code) isQuan = true;
+          address();
+          readPrizeMsg(hasPrize.realUrl);
+          document.querySelector('.loading').style.display = 'none';
+        })
+      }
+      // 渲染当前获奖商品
+      function readPrizeMsg(img){
+        let domPrizeImg = document.querySelector('.add-fill-show-item');
+        let imgDom = isQuan?`<img src="${img}" style="height:92%;"></img>`:`<img src="${img}"></img>`
+        domPrizeImg.innerHTML = imgDom;
+      }
+      // 地址选择 显示 / 隐藏
+      function  address() {
+        if(isQuan) {
+          cirtyDomBox.style.display = 'none';
+          addressDomBox.style.display = 'none';
+        } 
+      }
+
+      // 判断用户信息 填写是否完整
+      function postSubmit() {
+        userName = nameDom.value.trim();
+        userPhone = phoneDom.value.trim();
+        userCity= cirtyDom.value.trim();
+        userAddress = addressDom.value.trim();
+        let isOk =  isQuan? !!(userName && userPhone) : !!(userName && userPhone && userCity && userAddress);
+        return isOk
+      }
+
+      // 提交用户信息 请求
+      function userSubmutHttp(data){
+        let ASE = Encrypt(JSON.stringify(data))
+        userSubmit({data:ASE}).then(res=>{
+          let response = JSON.parse(Decrypt(res.data))
+            if(response.code == 0 ){
+              let submitMask = document.getElementById('submit-box');
+              submitMask.classList.add("submit-mask");
+            }else{
+              msg.msg = response.message;
+              console.log(msg)
+              msg.show();
+            }
+        })
+      }
+
+      // 
+
   </script>
 
 </body>

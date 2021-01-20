@@ -31,7 +31,7 @@ if (city[selectedIndex[0]].sub[selectedIndex[1]].hasOwnProperty('sub')) {
   third = [{text: '', value: 0}];
 }
 
-console.log([first, second, third])
+// console.log([first, second, third])
 var picker = new Picker({
 	data: [first, second, third],
   selectedIndex: selectedIndex,
@@ -101,8 +101,8 @@ picker.on('picker.change', function (index, selectedIndex) {
 });
 
 picker.on('picker.valuechange', function (selectedVal, selectedIndex) {
-  console.log(selectedVal);
-  console.log(selectedIndex);
+  // console.log(selectedVal);
+  // console.log(selectedIndex);
 });
 
 nameEl.addEventListener('click', function () {

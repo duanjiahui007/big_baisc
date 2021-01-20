@@ -46,7 +46,7 @@
             <img src="" alt="" />
           </div> -->
         </div>
-        <div class="btn" id="btnStart">
+        <div class="btn" id="btnStart" onclick="hanldStart()">
           <img src="./image/needle.png" alt="开始抽奖"/>
         </div>
 
@@ -55,7 +55,7 @@
     <!--抽奖次数  -->
     <div class="play-eg">
       您还有
-      <span>1</span>
+      <span class="play-bout">1</span>
       次游戏机会
     </div>
     <!-- 我的奖品 -->
@@ -100,7 +100,6 @@
             <ul class="ul-style">
               <li>大转盘抽奖分多轮进行,点击转盘中间按钮,即可开始游戏;</li>
               <li>若玩家没有提交个人信息,则视为放弃所获奖品;</li>
-              <li>若玩家没有提交个人信息,则视为放弃所获奖品;</li>
               <li>若为实物类奖品,将根据用户填写的地址进行邮寄;若为卡券类奖品,请根据中奖页面的二维码提示进行领取使用。</li>
             </ul>
           </div>
@@ -117,8 +116,9 @@
       <div class="ranking-show-content rules-show-content">
         <div class="ranking-show-list rules-show-txt">
           <div class="list-tip">
-              <span>序号</span>
-              <span>名称</span>
+              
+              <span>用户名</span>
+              <span>手机</span>
               <span>奖品</span>
           </div>
           <ul id="ranking-list"></ul>
@@ -141,21 +141,21 @@
     <!-- 我的奖品 -->
     <div class="mePrize rules-show no-chance" id="me_prize">
       <!-- 无奖品显示 （活动结束显示 ：奖品已发完 / 未获得奖品显示：您暂未获得奖品） -->
-      <div class="mePrize-content no-chance-content rules-show-content"  style="display: none;">
+      <div class="mePrize-content no-chance-content rules-show-content noHasMePrize" >
         <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
         <div class="mePrize-txt no-chance-txt rules-show-txt">您暂未获得奖品<br/>请再接再厉</div>
       </div>
       <!-- 有奖品显示 -->
-      <div class="mePrize-copone" onclick="stopPrizeClose()">
+      <div class="mePrize-copone hasMePrize" onclick="stopPrizeClose()" style="display: none;">
         <!-- 卡券显示 -->
-        <div class="mePrize-copone-yes-code  mePrize-copone-content rules-show-content">
+        <div class="mePrize-copone-yes-code  mePrize-copone-content rules-show-content hasCode" style="display: none;">
           <div>
             <!-- 卡券图片 -->
             <div class="mePrize-coupon-code-img">
               <img src="./image/code-img.png" alt=""/>
             </div>
             <div class="mePrize-coupon-code-txt">
-              可线上购买蛋糕、电影票、网络视听会员、图书等
+              可线上购买蛋糕(限西安市内)、电影票、网络视听会员、图书等
             </div>
             <!-- 商家二维码 -->
             <div class="mePrize-coupon-code" >
@@ -166,30 +166,30 @@
           <img src="./image/close.png" alt="close" id="close-box" class="close-1" onclick="closeMePrize()"/>
         </div> 
         <!-- 卡券显示/卡券密码显示 -->
-        <div class="mePrize-coupon-ma">
+        <div class="mePrize-coupon-ma hasCode" style="display: none;">
           <span>卡券编码:</span>
-          <p>卡券编码显示位</p>
+          <p id="codeNumbox">卡券编码显示位</p>
         </div> 
-        <div class="mePrize-coupon-ma" >
+        <div class="mePrize-coupon-ma hasCode" style="display: none;">
           <span>卡券密码:</span>
-          <p>卡券密码显示</p>
+          <p id="codePwdBox">卡券密码显示</p>
         </div>
-        <div class="mePrize-coupon-code-explain">
+        <div class="mePrize-coupon-code-explain hasCode" style="display: none;">
           <h3>卡券绑定</h3>
           <p>微信关注中福尚优公众号-进入我的卡券-绑定卡券-输入账号密码绑定卡券-绑定成功</p>
         </div>
-        <div class="mePrize-coupon-title" >
+        <div class="mePrize-coupon-title hasCode" style="display: none;">
           <img src="./image/code-title.png" />
         </div>
         <!-- 卡券说明 -->
-        <div class="mePrize-coupon-rules rules-show-content" >
+        <div class="mePrize-coupon-rules rules-show-content hasCode" style="display: none;" >
           <div class="mePrize-copone-rules-txt">
             <!-- <h3>活动说明:</h3> -->
             <ul>
               <li class="li-title">
                 方式一: 线上福利平台
               </li>
-              <li class="li-content">微信扫描卡背中福尚优公众号并关注-进入我的卡券-绑定卡券-输入账号密码绑定卡券-绑定成功</li>
+              <li class="li-content">可线上购买蛋糕(限西安市内)、电影票、网络视听会员、图书等</li>
               <li class="li-title">
                 方式二: 线下店内购买
               </li>
@@ -201,11 +201,11 @@
         </div>
        
         <!-- 非卡券显示 -->
-        <div class="mePrize-copone-content rules-show-content mePrize-copone-no-code" style="display: none;">
-          <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
-          <div class="mePrize-copone-imges"></div>
+        <div class="mePrize-copone-content rules-show-content mePrize-copone-no-code noCode" style="display: none;">
+          <img src="./image/close.png" alt="close" id="close-box" class="close-1" onclick="closeMePrize()"/>
+          <div class="mePrize-copone-imges" id="noCodeImage"></div>
         </div>
-        <div class="mePrize-coupon-rules-goods-txt" style="display: none;">
+        <div class="mePrize-coupon-rules-goods-txt noCode" style="display: none;">
           <h3>派送方式</h3>
           <p>直播结束三日后, 银行工作人员将会致电,确认无误后会根据所填地址进行邮寄。</p>
         </div>
@@ -230,27 +230,59 @@
 
   <script>
      window.onload = () =>{
-      document.querySelector('.loading').style.display = 'none';
+      // 全局提示
+      let allMsg =  new getMessage('');
       getPieList();
+      userBout();
+      getHasRanking();
+      getMePrizeHttp();
     }
-
+    // loading 关闭
+    function  closeLoading() {
+      document.querySelector('.loading').style.display = 'none';
+    }
     // 转盘部分 
-    let pieData = [];
+    let pieData = []; //转盘奖品数据
+    // -----  游戏 ------
+    let prizeList = [];     //奖品数据
+    let prizeNum = 6 ;      //奖品数量
+    let userBoutNum = 0 ;     //用户可用游戏次数
+    let userFlag = true ;   //用户是否可以玩
+    let asyncData = '' ;    //中奖数据
+    let isPointer = false;  //是否指针旋转
+    let rotateStyle = '';   //转盘旋转样式
+    let pointerStyle = '';  //指针旋转样式
+    let fixCircle = 6 ;     //转盘固定旋转圈数
+    let pointerCircle = 6 ; //指针固定旋转圈数
+    let flag = true ;       //节流
+    let winIndex = 1 ;      // 中间索引 （下标）
+    let preDeg = 0 ;        //上次游戏转盘旋转角度
+    // -----  游戏 ------
+    // 我的奖品
+    let isQuan = false ; //是否是奖券
+    let isMeHasPrize = false ; //是否获取奖品
 
     // 获取转盘奖品列表
     function getPieList(){
       getWheelPrize('2').then(res => {
         let datas = JSON.parse(Decrypt(res.data));
         if(datas.code == '0' ){
-          pieData = datas.data ;
+          pieData = datas.data;
+          console.log(datas,"奖品列表")
+          let obj = {
+            id:0,
+            imageUrl: './image/05.png',
+            name:'谢谢参与'
+          }
+          pieData.unshift(obj);
+          pieData.splice(3,0,obj)
+          createPrizeList(domPie,prizeNum,datas.data);
         }
       })
     }
     
     // 中奖元素添加
     let domPie = document.getElementById('pieDisc');
-    
-    createPrizeList(domPie,6);
     // 生成奖品
     function createPrizeList (domPie,w,data) {
       let R = Number(window.getComputedStyle(domPie,null).width.slice(0, -2));
@@ -261,12 +293,11 @@
         let rotateDeg = Deg_t*i;
         let images,html;
         if(!data){
-          images = '0'+(i+1)+'.png'
-          if(i==5) images = '05.png';
-          html = `<span>谢谢ddd参与${i}</span>
-                  <img src="./image/${images}" />`
+          alert("请求异常！请退出刷新");
         }else{
-        
+            images = data[i].imageUrl;
+            html = `<span>${data[i].name}</span>
+                    <img src="${images}" />`
         }
         
         
@@ -277,14 +308,34 @@
         domItem.innerHTML = html ; 
         domPie.appendChild(domItem);
       }
-      
+      closeLoading();
+    }
+    // 当前 用户可用游戏次数
+    function userBout(){
+      let PlayBout = document.querySelector('.play-bout');
+      userPlayRounds().then(res =>{
+        console.log(JSON.parse(Decrypt(res.data)),"游戏次数");
+        let datas = JSON.parse(Decrypt(res.data));
+        userBoutNum = datas.data;
+        PlayBout.innerText = datas.data;
+      })
+    }
+    
+    // 用户抽奖
+    async function userPlayGame(){
+      let a =  await playStart().then(res=>{
+        console.log(JSON.parse(Decrypt(res.data)))
+        return JSON.parse(Decrypt(res.data)).data
+      })
+      return a 
     }
 
     // 遮罩元素
     let MaskDom = document.getElementById("maskId");
-    MaskDom.addEventListener('click',(event)=>{
+    function MaskClose() {
       event.currentTarget.style.display = 'none';
       document.body.classList.remove('body-disabled');
+      let pieDiscDom = document.getElementById('pieDisc');
       if(flag){
         if(isPointer){
           startDom.style.transform = "rotate("+ preDeg +"deg)";
@@ -292,12 +343,13 @@
           pieDiscDom.style.transform = "rotate("+ preDeg +"deg)";
         }
       }
-    },false)
+    }
+    MaskDom.addEventListener('click',MaskClose,false)
     // 活动规则 中奖名单显示 消息提示
-    let rulesShow = document.getElementById('rules_show');
-    let rankingShow = document.getElementById('ranking_show');
-    let noChance = document.getElementById('no_chance');
-    let mePrize = document.getElementById('me_prize');
+    let rulesShow = document.getElementById('rules_show');     // 活动规则
+    let rankingShow = document.getElementById('ranking_show'); // 排行榜
+    let noChance = document.getElementById('no_chance');       // 没有游戏机会
+    let mePrize = document.getElementById('me_prize');         // 我的奖品
     // 活动规则
     let rulesDom = document.getElementById('rules');
     rulesDom.onclick = () => {
@@ -328,17 +380,72 @@
       MaskDom.style.display = 'none';
       document.body.classList.remove('body-disabled');
     }
+    // 获取我的奖品
+    function  getMePrizeHttp() {
+      userPrize().then(res=>{
+        let isMePrizeRepouest = JSON.parse(Decrypt(res.data));
+        let isMePrizeData = isMePrizeRepouest.data;
+        console.log(isMePrizeRepouest)
+        if(isMePrizeRepouest.code !== 0) {
+          allMsg.msg = isMePrizeRepouest.message;
+          allMsg.show();
+          return ;
+        }
+        if(isMePrizeData && isMePrizeData.length>0){
+          isMeHasPrize = true
+          isQuan = isMePrizeData[1].code? true : false ;
+          showPrize(isMePrizeData[1]);
+        }
+      })
+    }
+    // 显示普通奖品 /  奖券
+    function showPrize(data) {
+      let noPrize = document.querySelector('.noHasMePrize') // 没有获得奖品
+      let hasPrize = document.querySelector('.hasMePrize'); // 有获得奖品
+      let isCodeShow = document.getElementsByClassName('hasCode'); // 是奖券
+      isCodeShow = [...isCodeShow];
+      let isNoCodeShow = document.getElementsByClassName('noCode'); // 是普通奖品
+      isNoCodeShow = [...isNoCodeShow];
+
+      let isCodeNum = document.getElementById('codeNumbox'); //卡券编码
+      let isCodePwd = document.getElementById('codePwdBox'); //卡券密码
+      let NoCodeImage = document.getElementById('noCodeImage');//非卡券显示图片
+
+      if(isMeHasPrize){
+        noPrize.style.display = 'none';
+        hasPrize.style.display = 'block';
+        if(isQuan){
+            isCodeShow.forEach(item=>{
+              item.style.display = 'block';
+              if(item.classList.contains('mePrize-coupon-ma')){
+                item.style.display = 'flex';
+              }
+            })
+            isNoCodeShow.forEach(item => {
+              item.style.display = 'none'
+            })
+            isCodeNum.innerText = data.code;
+            isCodePwd.innerText = data.pwd;
+        }else{
+            NoCodeImage.innerHTML = `<img src="${data.realUrl}" />`
+            isCodeShow.forEach(item=>{
+              item.style.display = 'none'
+            })
+            isNoCodeShow.forEach(item => {
+            item.style.display = 'block'
+          })
+        }
+      }else {
+        noPrize.style.display = 'block';
+        hasPrize.style.display = 'none';
+      }
+      
+      
+    }
+    
+
     // 中奖名单 
     let rankingDom = document.getElementById('ranking');
-    let rankingList = document.getElementById('ranking-list');
-    for(let i = 0 ; i<100 ; i++) {
-      let html = `<li>
-      <span>${i}</span>
-      <span>名${i}称</span>
-      <span>奖${i}品</span>
-    </li>`;
-    rankingList.innerHTML += html;
-    }
     rankingDom.onclick = () => {
       MaskDom.style.display = 'block';
       rulesShow.style.display = 'none';
@@ -347,80 +454,128 @@
       mePrize.style.display = 'none';
       document.body.classList.add('body-disabled');
     }
-    // 提示信息
-    
 
-    // 点击开始旋转
-    // 旋转封装
-    // {
-      let prizeList = [];     //奖品数据
-      let prizeNum = 6 ;      //奖品数量
-      let userCount = 1 ;     //用户可用游戏次数
-      let userFlag = true ;   //用户是否可以玩
-      let asyncData = '' ;    //中奖数据
-      let isPointer = false;  //是否指针旋转
-      let rotateStyle = '';   //转盘旋转样式
-      let pointerStyle = '';  //指针旋转样式
-      let fixCircle = 6 ;     //转盘固定旋转圈数
-      let pointerCircle = 6 ; //指针固定旋转圈数
-      let flag = true ;       //节流
-      let winIndex = 1 ;      // 中间索引 （下标）
-      let preDeg = 0 ;        //上次游戏转盘旋转角度
-      // 获取当前用户游戏次数
-      function getUserCount(){
-        if(userCount<1){
-          userFlag = false;
+    // 获取中奖名单
+    function getHasRanking () {
+      userRanking().then(res => {
+        let datas = JSON.parse(Decrypt(res.data)) 
+        console.log(JSON.parse(Decrypt(res.data)),"排行榜")
+        readHasRanking(datas.data);
+      })
+    }
+    // 渲染排行榜
+    function readHasRanking(data) {
+      let rankingList = document.getElementById('ranking-list');
+      if(data &&  data.length>0){
+        for(let i = 0 ; i< data.length ; i++) {
+          let name = data[i].name;
+          let phone = data[i].tel ||'xxxx';
+          let prizeName = data[i].prizeName;
+          let html = `<li>
+            <span>${name}</span>
+            <span>${phone}</span>
+            <span>${prizeName}</span>
+          </li>`;
+          rankingList.innerHTML += html;
         }
-      }
-      // 点击旋转按钮
-      async function  hanldStart() {
-        if(flag) return;
-
-        flag = false;
-        let winningIndex = await Ajax() ? await Ajax() : Math.floor(Math.random()*prizeNum);
-      }
-      // 计算旋转圈数角度
-      function  countDeg(index) {
-        let cycles = isPointer? pointerCircle : fixCircle;
-        cycles*=360;
-        // 旋转角度
-        
-        let cyclesDeg = ( 360/prizeNum )*index + cycles + preDeg ;
-        // 记录角度
-        preDeg = ( 360/prizeNum )*( prizeNum - index) + cyclesDeg;
-
-        return cyclesDeg;
-      }
-    // }
-    //  待更改
-    let startDom = document.getElementById('btnStart');
-    let pieDiscDom = document.getElementById('pieDisc');
-    startDom.onclick = () => {
-      if(flag){
-        flag = false;
-        pieDiscDom.style.transition = "transform ease 4s";
-        if(isPointer) {
-          startDom.style.transition = "transform ease 4s";
-          startDom.style.transform = "rotate("+ countDeg(winIndex) +"deg)"+"scale(0.9)";
-        }else {
-          pieDiscDom.style.transform = "rotate("+ countDeg(prizeNum-winIndex) +"deg)";
-        }
-        setTimeout(()=>{
-          pieDiscDom.style.transition = 'none';
-          startDom.style.transition = 'none';
-          
-          flag = true;
-          // 显示游戏次数不足
-          MaskDom.style.display = 'block';
-          rulesShow.style.display = 'none';
-          rankingShow.style.display = 'none';
-          noChance.style.display = 'block';
-          mePrize.style.display = 'none';
-          document.body.classList.add('body-disabled');
-        },4100)
+      }else {
+        rankingList.innerHTML = `<li style="justify-content: center;">
+          <span>暂无数据</span></li>`
       }
     }
     
+    
+      
+    // 获取当前用户游戏次数
+    function getUserCount(){
+      if(userBoutNum<1){
+        userFlag = false;
+        flag = false;
+        // 显示游戏次数不足
+        msgWindow('您的游戏机会已用完');
+      }else{
+        userFlag = true;
+      }
+    }
+    // 点击旋转按钮
+    async function  hanldStart() {
+      getUserCount();
+      if(!flag) return;
+      flag = false;
+      let index = await userPlayGame()
+      // winIndex = index >= 0 &&  index !== undefined ? index : Math.floor(Math.random()*prizeNum);
+      let winIndexId = index >= 0 &&  index !== undefined ? index : 2;
+      
+      pieData.forEach((item,inx) => {
+        if(winIndexId == 0) {
+          winIndex = Math.floor(Math.random()*2)? 3 : 0;
+          return
+        }
+        if(item.id == winIndexId) {
+          winIndex = inx
+        }
+      })
+      console.log(winIndex, index >= 0 ,index)
+      pieMoveMent();
+      userBout();
+      getHasRanking();
+    }
+    // 计算旋转圈数角度
+    function  countDeg(index) {
+      let cycles = isPointer? pointerCircle : fixCircle;
+      cycles*=360;
+      // 旋转角度
+      
+      let cyclesDeg = ( 360/prizeNum )*index + cycles + preDeg ;
+      // 记录角度
+      preDeg = ( 360/prizeNum )*( prizeNum - index) + cyclesDeg;
+
+      return cyclesDeg;
+    }
+    // 转盘运动
+    function pieMoveMent(){
+      let startDom = document.getElementById('btnStart');
+      let pieDiscDom = document.getElementById('pieDisc');
+
+      pieDiscDom.style.transition = "transform ease 4s";
+      if(isPointer) {
+        startDom.style.transition = "transform ease 4s";
+        startDom.style.transform = "rotate("+ countDeg(winIndex) +"deg)"+"scale(0.9)";
+      }else {
+        pieDiscDom.style.transform = "rotate("+ countDeg(prizeNum-winIndex) +"deg)";
+      }
+      setTimeout(()=>{
+        pieDiscDom.style.transition = 'none';
+        startDom.style.transition = 'none';
+        flag = true;
+        let msg ;
+        if(winIndex === 0 || winIndex === 3) {
+          msg = '您差一点获得奖品...'
+        }else {
+          msg = '恭喜您获得' + pieData[winIndex].name +`<br/> <p>即将跳转至领奖界面,请勿返回<p>` ;
+          setTimeout(()=>{
+            location.href = './addFilling.html?id='+pieData[winIndex].id ;
+          },1000);
+          MaskDom.removeEventListener('click',MaskClose,false)
+        }
+        msgWindow(msg);
+      },4100)
+    }
+    // 提示弹框
+    function msgWindow(msg) {
+      noChance.innerHTML = ` <div class="no-chance-content rules-show-content">
+      <div class="no-chance-txt rules-show-txt">${msg}</div>
+    </div>
+    <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
+    <img src="./image/red-box-3.png" alt="红包3" class="red-box-1">
+    <img src="./image/red-box-4.png" alt="红包4" class="red-box-2">`
+      MaskDom.style.display = 'block';
+      rulesShow.style.display = 'none';
+      rankingShow.style.display = 'none';
+      noChance.style.display = 'block';
+      mePrize.style.display = 'none';
+      document.body.classList.add('body-disabled');
+    }
    
 
 

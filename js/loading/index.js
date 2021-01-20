@@ -27,9 +27,11 @@
     this.isLangEr = null;
     this.msg_dom_txt = document.querySelector('.msg-txt');
     this.msg_dom_box = document.querySelector('.mask-msg');
-
+    this.flag = true
     // 显示
     this.show = function (){
+      if(!this.flag) return ;
+      this.flag = false;
       if(this.isAll){
         this.msg_dom_box .classList.add('mask-msg-all');
       }
@@ -41,6 +43,7 @@
       this.msg_dom_txt.classList.add('msg-txt-show');
       this.isLang = setTimeout(()=>{
         this.close();
+        this.flag = true;
       },delayed*1000);
       if(this.loading){
         clearTimeout(this.isLang);
