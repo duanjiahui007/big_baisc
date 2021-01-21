@@ -135,5 +135,17 @@
   <script src="./js/tool/CryptoJS.min.js"></script>
   <script src="./js/tool/secret.js"></script>
   <script src="./js/tool/axios.min.js"></script>
+  <script src="./js/deploy/index.js"></script>
+  <script>
+    window.onload = () =>{
+      getData();
+    }
+    // 获取数据统计
+    function getData() {
+      getDataRecord().then(res=>{
+        console.log(JSON.parse(Decrypt(res.data)))
+      })
+    }
+  </script>
 </body>
 </html>

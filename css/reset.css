@@ -27,6 +27,9 @@ body,html {
   font-family: "SiYuanHei","微软雅黑",Arial,sans-serif;
   height: 100%;
 }
+body div, body span ,body li, body p {
+  font-family: "SiYuanHei","微软雅黑",Arial,sans-serif;
+}
 
 :focus {
 outline: 1;

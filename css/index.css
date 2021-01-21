@@ -446,7 +446,7 @@ header .header-right i {
 }
 /* 非卡券显示 */
 .mePrize .mePrize-copone-no-code {
-  transform: translateY(-1.066667rem);
+  transform: translateY(-0.373333rem);
 }
 .mePrize .mePrize-copone .mePrize-copone-content{
   position: relative;
@@ -629,7 +629,7 @@ header .header-right i {
   line-height: .46667rem;
   font-size: .293333rem;
   letter-spacing: .023333rem;
-  width: 5.333333rem;
+  width: 5.733333rem;
   margin: 0 auto;
 }
 /* 没有游戏机会 */
@@ -645,6 +645,7 @@ header .header-right i {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  text-align: center;
 }
 .no-chance .no-chance-content .no-chance-txt > p {
   color: #fde934;
@@ -757,6 +758,7 @@ input {
   box-sizing: border-box;
   font-size: .666667rem;
   font-weight: bold;
+  white-space: nowrap;
   letter-spacing: .053333rem;
   padding: .266667rem .533333rem;
   background-color: #400053;

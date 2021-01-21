@@ -10,8 +10,11 @@ function getToken(params) {
     params
   })
 }
+
 if(!token){
-  getToken({userId:2}).then(res=>{
+  id =  parseInt(Math.random()*1000+1)
+  console.log(id)
+  getToken({userId:id}).then(res=>{
     console.log(res)
     token = res.headers['x-auth-token'];
     localStorage.setItem('token',token);

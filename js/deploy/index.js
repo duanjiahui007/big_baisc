@@ -1,5 +1,5 @@
-// const request = axios.create({baseURL: 'http://114.116.17.81:8234'});
-const request = axios.create({baseURL: 'http://192.168.0.174:8234'});
+const request = axios.create({baseURL: 'http://114.116.17.81:8234'});
+// const request = axios.create({baseURL: 'http://192.168.0.174:8234'});
 
 // 获取当前轮配置
 function getToolPrize(type){
@@ -18,10 +18,11 @@ function getIsPrize(){
 }
 
 // 开始/关闭当前轮游戏 
-function startOREnd(status){
+function startOREnd(data){
   return request({
-    url:"/activity-record/modifyStatus/"+status,
-    method:"put"
+    url:"/activity-record/modifyStatus/",
+    method:"put",
+    data
   })
 }
 
@@ -31,12 +32,15 @@ function ToolYes(data){
   return request({
     url:'/activity-prize/addActivityPrize',
     method:'post',
+    headers:{
+      'Content-Type':'application/json'
+    },
     data
   })
 }
 
 // 获取当前开始游戏的时间
-async function getGameingTime(params){
+function getGameingTime(params){
   return request({
     url:"/activity-record/getActivityRecord",
     method:'get',
@@ -46,3 +50,10 @@ async function getGameingTime(params){
 
 
 // 获取数据统计
+
+function getDataRecord() {
+  return request({
+    url:'/activity-record/statistics',
+    method:'get'
+  })
+}

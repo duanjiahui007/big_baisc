@@ -9,7 +9,7 @@
   <title>幸运抽奖大转盘</title>
   <link rel="stylesheet" href="./css/reset.css"/>
   <link rel="stylesheet" href="./css/loading.css"/>
-  <link rel="stylesheet" href="./css/index.css?v=2"/>
+  <link rel="stylesheet" href="./css/index.css"/>
 </head>
 <body>
    <!-- loading -->
@@ -214,7 +214,10 @@
       
     </div>
   </div>
- 
+  <!-- 消息提示 -->
+  <div class="mask-msg mask-msg-hide">
+    <div class="msg-txt">提示消息</div>
+  </div>
   
   <script src="./js/flexible/flexible.js"></script>
   <script src="./js/tool/ios.js"></script>
@@ -230,8 +233,7 @@
 
   <script>
      window.onload = () =>{
-      // 全局提示
-      let allMsg =  new getMessage('');
+      
       getPieList();
       userBout();
       getHasRanking();
@@ -241,6 +243,8 @@
     function  closeLoading() {
       document.querySelector('.loading').style.display = 'none';
     }
+    // 全局提示
+    let allMsg =  new getMessage('');
     // 转盘部分 
     let pieData = []; //转盘奖品数据
     // -----  游戏 ------
@@ -277,6 +281,11 @@
           pieData.unshift(obj);
           pieData.splice(3,0,obj)
           createPrizeList(domPie,prizeNum,datas.data);
+        }else {
+          console.log(datas,"奖品列表");
+          allMsg.msg = '游戏尚未开始' ;
+          allMsg.show();
+          closeLoading();
         }
       })
     }
@@ -299,7 +308,6 @@
             html = `<span>${data[i].name}</span>
                     <img src="${images}" />`
         }
-        
         
         let domItem = document.createElement('div');
         domItem.classList.add('pie-prize');
@@ -392,9 +400,10 @@
           return ;
         }
         if(isMePrizeData && isMePrizeData.length>0){
-          isMeHasPrize = true
-          isQuan = isMePrizeData[1].code? true : false ;
-          showPrize(isMePrizeData[1]);
+          isMeHasPrize = true;
+
+          isQuan = !!(isMePrizeData[0].code)? true : false ;
+          showPrize(isMePrizeData[0]);
         }
       })
     }
@@ -467,6 +476,7 @@
     function readHasRanking(data) {
       let rankingList = document.getElementById('ranking-list');
       if(data &&  data.length>0){
+        let innerHtml = ''
         for(let i = 0 ; i< data.length ; i++) {
           let name = data[i].name;
           let phone = data[i].tel ||'xxxx';
@@ -476,8 +486,9 @@
             <span>${phone}</span>
             <span>${prizeName}</span>
           </li>`;
-          rankingList.innerHTML += html;
+          innerHtml += html;
         }
+        rankingList.innerHTML = innerHtml;
       }else {
         rankingList.innerHTML = `<li style="justify-content: center;">
           <span>暂无数据</span></li>`
@@ -554,7 +565,7 @@
         }else {
           msg = '恭喜您获得' + pieData[winIndex].name +`<br/> <p>即将跳转至领奖界面,请勿返回<p>` ;
           setTimeout(()=>{
-            location.href = './addFilling.html?id='+pieData[winIndex].id ;
+            location.href = './addFilling.html' ;
           },1000);
           MaskDom.removeEventListener('click',MaskClose,false)
         }
@@ -566,7 +577,7 @@
       noChance.innerHTML = ` <div class="no-chance-content rules-show-content">
       <div class="no-chance-txt rules-show-txt">${msg}</div>
     </div>
-    <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
+    <img src="./image/close.png" alt="close" id="close-box" class="close-1" onclick="closeMePrize()" />
     <img src="./image/red-box-3.png" alt="红包3" class="red-box-1">
     <img src="./image/red-box-4.png" alt="红包4" class="red-box-2">`
       MaskDom.style.display = 'block';

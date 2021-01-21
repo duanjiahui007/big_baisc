@@ -1,6 +1,7 @@
 @font-face {
   font-family: "SiYuanHei";
-  src:url("./syh.otf");
+  src: url("./syht.ttf");
+  src:url("./syht.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }

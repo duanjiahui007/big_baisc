@@ -136,8 +136,9 @@
       // --------- 全局变量 ---------
         let prizeData = [] ; // 当前活动奖品信息
         let toolPrizeNum = [] ; // 存储配置信息
-        let activeTime = null ; //活动开始时间
         let nowTime = null ;  //时间定时器
+        let isStart = false ; //时间是否开始
+        let isEnd = false ; // 活动是否结束
       // ----------------------------
       window.onload = () =>{
         getToolPrizeData();
@@ -150,6 +151,7 @@
           let isData = JSON.parse(Decrypt(res.data))
           console.log(isData)
           prizeData = isData.data;
+          
           saveToolData(prizeData,toolPrizeNum);
           readToolWindow();
         }).catch(err=>{
@@ -161,14 +163,18 @@
           let isData = JSON.parse(Decrypt(res.data));
           if(isData.code == 0 && isData.data.length>0){
             console.log(isData)
+            
             readToolShow(isData.data);
             moveSwitch(isData.data[0].status)
+          }else{
+            console.log(isData)
           }
         })
       }
 
       // 将数据渲染到当前配置展示
       function readToolShow(arr) {
+        console.log(arr)
         let showHtml = '';
         arr.forEach(item=>{
           let itemHtml = `<div class="tool-cont-item">
@@ -204,15 +210,21 @@
       }
       // 关闭本轮抽奖配置显示 
       function closeNewPrize(){ 
-        document.getElementById('toolBox').style.display = 'none';
-        document.getElementsByTagName('header')[0].classList.add('header-no-tool');
-        document.querySelector('.loading').style.display = 'none';
+        clearInterval(nowTime)
+        // document.getElementById('toolBox').style.display = 'none';
+        // document.getElementsByTagName('header')[0].classList.add('header-no-tool');
+        // document.querySelector('.loading').style.display = 'none';
       }
       // 开关   <可优化>
       function move() {
         let toolBtn = document.querySelector('.tool-btn');
         let open = document.querySelector('.tool-open');
         let close = document.querySelector('.tool-close');
+        if(isEnd){
+          let msg  = new getMessage('本轮游戏已结束！请配置新一轮游戏。')
+          msg.show();
+          return;
+        }
         if(toolBtn.getAttribute('data-open')=== 'false'){
           // 开启
           toolBtn.setAttribute('data-open',true);
@@ -221,6 +233,7 @@
           close.classList.remove('tool-show');
           // loading
           document.querySelector('.loading').style.display = 'block';
+          isStart = true;
           startNow();
         } else{
           // 关闭
@@ -229,18 +242,21 @@
           open.classList.remove('tool-show');
           close.classList.add('tool-show');
           // loading
+          isStart = false;
+          isEnd = true;
           document.querySelector('.loading').style.display = 'block';
           endNow();
         }
       }
       // 开关移动
       function moveSwitch(val) {
+        let timeContent = document.querySelector('.tool-time-show');
         let toolBtn = document.querySelector('.tool-btn');
         let open = document.querySelector('.tool-open');
         let close = document.querySelector('.tool-close');
-        if(val == 0) { toolBtn.setAttribute('data-open',false); openNewPrize();}
-        if(val == 1 ){ toolBtn.setAttribute('data-open',true);showStartTime(); openNewPrize();}
-        if(val == 2) { closeTool(); return;}
+        if(val == 0) { toolBtn.setAttribute('data-open',false); openNewPrize(); isStart = true;timeContent.innerText='';}
+        if(val == 1 ){ toolBtn.setAttribute('data-open',true);showStartTime(); isStart = true; openNewPrize();}
+        if(val == 2) { closeTool(); ;return;}
         if(toolBtn.getAttribute('data-open')=== 'true'){
           // 开启
           toolBtn.style.transform = 'translateX(1.66667rem)';
@@ -256,8 +272,12 @@
       
       //开启本轮抽奖请求
       function startNow(){
-        let status = 1 ;
-        startOREnd(status).then(res=>{
+        let obj = {
+          status:1,
+          time:new Date().Format('yyyy-MM-dd HH:mm:ss')
+        } ;
+        let state = Encrypt(JSON.stringify(obj));
+        startOREnd({data:state}).then(res=>{
           let cont = Decrypt(res.data)
           console.log(cont,"√")
           document.querySelector('.loading').style.display = 'none';
@@ -266,8 +286,13 @@
       }
       // 关闭本轮抽奖请求
       function endNow() {
-        let status = 2 ;
-        startOREnd(status).then(res=>{
+        let obj = {
+          status:2,
+          time:new Date().Format('yyyy-MM-dd HH:mm:ss')
+        } ;
+        console.log(obj)
+        let state = Encrypt(JSON.stringify(obj));
+        startOREnd({data:state}).then(res=>{
           let cont = Decrypt(res.data)
           console.log(cont,"❎")
           closeNewPrize();
@@ -277,51 +302,59 @@
         })
       }
 
-      // 抽奖时间
+      // 抽奖时间 计时开始
       async function showStartTime(){
         let timeContent = document.querySelector('.tool-time-show');
-        let startTime = 0 ; 
-        activeTime =  await getStartTime(1);
-        if(activeTime) {
-          startTime = activeTime
-        };
-        timeContent.innerText = secondsFormat(startTime) 
-        nowTime = setInterval(() => {
-          startTime++;
-          timeContent.innerText = secondsFormat(startTime) 
-        }, 1000);
+        getStartTime(1).then(res =>{
+          let startTime = res?res:0;
+          timeContent.innerText = secondsFormat(startTime) ;
+          nowTime = setInterval(() => {
+            startTime++;
+            timeContent.innerText = secondsFormat(startTime) 
+          }, 1000);
+        });
+        
       }
-      function  hideEndTime() {
+      // 关闭本轮配置 计时结束
+      async function  hideEndTime() {
         let timeContent = document.querySelector('.tool-time-show');
         clearInterval(nowTime);
-        timeContent.innerText = '';
-      }
+        getStartTime(2).then(res=>{
+          let timeDuan = res?res:0;
+          timeContent.innerText = secondsFormat(timeDuan) 
+        });
+        
+      } 
+      
       // 时分秒转化
       function secondsFormat( s ) { 
           var day = Math.floor( s/ (24*3600) ); // Math.floor()向下取整 
           var hour = Math.floor( (s - day*24*3600) / 3600); 
           var minute = Math.floor( (s - day*24*3600 - hour*3600) /60 ); 
           var second = s - day*24*3600 - hour*3600 - minute*60; 
-          return  minute + " 分 " + second + " 秒"; 
+          return  minute +' '+ " 分 " + second + " 秒"; 
       }
-      // 获取开始抽奖时间
-      async function getStartTime(status){
-        let obj = {status:status}
-        let times = await getGameingTime(obj).then(res=>{
-         console.log(Decrypt(res.data))
-         let TimeData = JSON.parse(Decrypt(res.data));
-         let isTime = new Date().valueOf();
-         let sTime = new Date(TimeData.data.startTime).valueOf();
-         let gTime = isTime - sTime ;
-         return parseInt(gTime / 1000) ;
+      // 获取开始抽奖时间 - 当前时间 时间戳
+      function getStartTime(status){
+        return new Promise((resolve,reject)=>{
+          let obj = {status:status}
+          getGameingTime(obj).then(res=>{
+            console.log(JSON.parse(Decrypt(res.data)))
+            let TimeData = JSON.parse(Decrypt(res.data));
+            let isTime = new Date().valueOf();
+            let sTime = new Date(TimeData.data.startTime.replace(/\-/g,'/')).valueOf();
+            let gTime =  isTime - sTime ;
+            console.log(sTime , isTime , gTime);
+            resolve(parseInt(gTime / 1000) )
+          })
         })
-        return times
       }
-
+      // 获取开始抽奖时间 - 结束抽奖时间
 
       // 打开抽奖配置
       let mask = document.getElementById('maskId');
       function  startTool() {
+        if(isStart) return;
         document.body.classList.add('body-disabled');
         mask.style.display = 'block'
       }
