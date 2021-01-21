@@ -278,17 +278,16 @@
       }
 
       // 抽奖时间
-      function showStartTime(){
+      async function showStartTime(){
         let timeContent = document.querySelector('.tool-time-show');
         let startTime = 0 ; 
+        activeTime =  await getStartTime(1);
         if(activeTime) {
-          let nowIs = new Date();
-          console.log()
-          startTime = 100
+          startTime = activeTime
         };
-        timeContent.innerText ='0 分 0 秒';
+        timeContent.innerText = secondsFormat(startTime) 
         nowTime = setInterval(() => {
-          startTime++; 
+          startTime++;
           timeContent.innerText = secondsFormat(startTime) 
         }, 1000);
       }
@@ -306,8 +305,17 @@
           return  minute + " 分 " + second + " 秒"; 
       }
       // 获取开始抽奖时间
-      function getStartTime(){
-       
+      async function getStartTime(status){
+        let obj = {status:status}
+        let times = await getGameingTime(obj).then(res=>{
+         console.log(Decrypt(res.data))
+         let TimeData = JSON.parse(Decrypt(res.data));
+         let isTime = new Date().valueOf();
+         let sTime = new Date(TimeData.data.startTime).valueOf();
+         let gTime = isTime - sTime ;
+         return parseInt(gTime / 1000) ;
+        })
+        return times
       }
 
 
@@ -333,12 +341,13 @@
           let obj = { activityPrizes :[] };
           obj.activityPrizes = [...toolPrizeNum];
           ToolYes(obj).then(res=>{
+            a.close();
             let isData = JSON.parse(Decrypt(res.data));
-            console.log(Decrypt(res.data));
             a.msg = isData.message;
             a.loading = false;
             a.isAll = false;
             a.show();
+            console.log(Decrypt(res.data),"确认",a);
             if(isData.code == 0 ) {
               toolPrizeNum = [];
               closeTool();

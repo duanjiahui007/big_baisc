@@ -1,5 +1,5 @@
-const request = axios.create({baseURL: 'http://114.116.17.81:8234'});
-// const request = axios.create({baseURL: 'http://192.168.0.174:8234'});
+// const request = axios.create({baseURL: 'http://114.116.17.81:8234'});
+const request = axios.create({baseURL: 'http://192.168.0.174:8234'});
 
 // 获取当前轮配置
 function getToolPrize(type){
@@ -35,6 +35,14 @@ function ToolYes(data){
   })
 }
 
+// 获取当前开始游戏的时间
+async function getGameingTime(params){
+  return request({
+    url:"/activity-record/getActivityRecord",
+    method:'get',
+    params
+  })
+}
 
 
 // 获取数据统计

@@ -43,7 +43,6 @@
       this.msg_dom_txt.classList.add('msg-txt-show');
       this.isLang = setTimeout(()=>{
         this.close();
-        this.flag = true;
       },delayed*1000);
       if(this.loading){
         clearTimeout(this.isLang);
@@ -60,6 +59,7 @@
         if(this.isAll){
           this.msg_dom_box .classList.remove('mask-msg-all');
         }
+        this.flag = true
       },330)
     }
   }
