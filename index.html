@@ -142,7 +142,7 @@
     <div class="mePrize rules-show no-chance" id="me_prize">
       <!-- 无奖品显示 （活动结束显示 ：奖品已发完 / 未获得奖品显示：您暂未获得奖品） -->
       <div class="mePrize-content no-chance-content rules-show-content noHasMePrize" >
-        <img src="./image/close.png" alt="close" id="close-box" class="close-1" />
+        <img src="./image/close.png" alt="close" id="close-box" class="close-1" onclick="closeMePrize()"/>
         <div class="mePrize-txt no-chance-txt rules-show-txt">您暂未获得奖品<br/>请再接再厉</div>
       </div>
       <!-- 有奖品显示 -->
@@ -233,11 +233,33 @@
 
   <script>
      window.onload = () =>{
-      
-      getPieList();
-      userBout();
-      getHasRanking();
-      getMePrizeHttp();
+      localStorage.removeItem('id');
+      localStorage.removeItem('token');
+      if(token){
+        token = '';
+        localStorage.removeItem('id');
+        localStorage.removeItem('token');
+      }
+      // alert(localStorage.getItem('token')+"8888------------8888")
+      // alert(token)
+      //  alert(!!hasToken())
+      // !!hasToken()?
+      (()=>{
+        hasToken().then(res=>{
+      //   // alert('token')
+        getPieList();
+        userBout();
+        getHasRanking();
+        getMePrizeHttp();
+      })})()
+      // :(()=>{
+      //   // alert("pdd")
+      //   getPieList();
+      //   userBout();
+      //   getHasRanking();
+      //   getMePrizeHttp();
+      // })()
+      // alert(localStorage.getItem('id'))
     }
     // loading 关闭
     function  closeLoading() {
@@ -308,7 +330,6 @@
             html = `<span>${data[i].name}</span>
                     <img src="${images}" />`
         }
-        
         let domItem = document.createElement('div');
         domItem.classList.add('pie-prize');
         domItem.style.width = WIDTH-30 + "px";
@@ -324,6 +345,7 @@
       userPlayRounds().then(res =>{
         console.log(JSON.parse(Decrypt(res.data)),"游戏次数");
         let datas = JSON.parse(Decrypt(res.data));
+        // alert(res.config.headers['x-auth-token']+'段')
         userBoutNum = datas.data;
         PlayBout.innerText = datas.data;
       })
@@ -565,7 +587,8 @@
         }else {
           msg = '恭喜您获得' + pieData[winIndex].name +`<br/> <p>即将跳转至领奖界面,请勿返回<p>` ;
           setTimeout(()=>{
-            location.href = './addFilling.html' ;
+            // alert(localStorage.getItem('id')+"__Jump_")
+            location.href = './addFilling.html?id='+`${localStorage.getItem('id')}`;
           },1000);
           MaskDom.removeEventListener('click',MaskClose,false)
         }

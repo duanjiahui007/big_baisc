@@ -68,11 +68,12 @@ main {
   align-items: center;
 }
 .record-data-show-item .record-data-show-item-t .time {
-  font-size: .44rem;
+  font-size: .373333rem;
   box-sizing: border-box;
   padding: 0 .266667rem;
   display: flex;
   justify-content: space-between;
+  white-space: nowrap;
 }
 .record-data-show-item .record-data-show-item-t .time >span:nth-of-type(1){
   flex-shrink: 0;
@@ -144,12 +145,13 @@ main {
 }
 .total .total-data > div {
   margin-bottom: .533333rem;
-  display: flex;
+  /* display: flex; */
   color: #ffffff;
   font-size: .48rem;
   letter-spacing: .026667rem;
   flex-basis: 47%;
-  flex-wrap:wrap ;
+  /* flex-wrap:wrap ; */
+  line-height: .693333rem;
 }
 .total .total-data .item-key {
   flex-shrink: 0 ;

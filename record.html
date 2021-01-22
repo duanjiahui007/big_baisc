@@ -102,7 +102,6 @@
   <script>
     window.onload = () =>{
       getData();
-      document.querySelector('.loading').style.display = 'none';
     }
     // 全局数据变量
     let recordData = []; //所有轮次数据
@@ -116,6 +115,7 @@
       getDataRecord().then(res=>{
         console.log(JSON.parse(Decrypt(res.data)))
         let datas = JSON.parse(Decrypt(res.data));
+        document.querySelector('.loading').style.display = 'none';
         if(datas.code == 0){
           recordData = [...datas.data.activityPrizeVos]
           peopleNum = datas.data.joinNum;
@@ -145,7 +145,7 @@
       let surplusBox = document.getElementById('surplusBox');
 
       joinBox.innerText = peopleNum?peopleNum : 0;
-      timeBox.innerText = time?time:0;
+      timeBox.innerText = time?secondsFormat(time):0;
       winBox.innerText = given?given:0;
       surplusBox.innerText = surplus?surplus:0;
 
@@ -186,6 +186,9 @@
           var hour = Math.floor( (s - day*24*3600) / 3600); 
           var minute = Math.floor( (s - day*24*3600 - hour*3600) /60 ); 
           var second = s - day*24*3600 - hour*3600 - minute*60; 
+          hour =  hour<10 ? '0'+hour :hour
+          minute =  minute<10 ? '0'+minute :minute
+          second =  second<10 ? '0'+second :second
           return hour +' : ' + minute + " : " + second ; 
       }
   </script>

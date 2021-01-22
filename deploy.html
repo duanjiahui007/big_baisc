@@ -51,7 +51,7 @@
           </div>
           <!-- 抽奖时长 -->
           <div class="tool-time">
-            <span>抽奖时间:</span>
+            <span>抽奖时长:</span>
             <span class="tool-time-show"></span>
           </div>
           <!-- 开关 -->
@@ -139,6 +139,8 @@
         let nowTime = null ;  //时间定时器
         let isStart = false ; //时间是否开始
         let isEnd = false ; // 活动是否结束
+
+        let getDataTime = null ;
       // ----------------------------
       window.onload = () =>{
         getToolPrizeData();
@@ -162,9 +164,20 @@
         getToolPrize('1').then(res => {
           let isData = JSON.parse(Decrypt(res.data));
           if(isData.code == 0 && isData.data.length>0){
-            
             readToolShow(isData.data);
             moveSwitch(isData.data[0].status)
+          }else{
+            console.log(isData)
+          }
+        })
+      }
+
+      // 获取当前配置信息实时更新
+      function getState() {
+        getToolPrize('1').then(res => {
+          let isData = JSON.parse(Decrypt(res.data));
+          if(isData.code == 0 && isData.data.length>0){
+            readToolShow(isData.data);
           }else{
             console.log(isData)
           }
@@ -178,7 +191,7 @@
         arr.forEach(item=>{
           let itemHtml = `<div class="tool-cont-item">
               <div class="tool-cont-item-name">${item.name}</div>
-              <div class="tool-cont-item-num">${item.prizeNum}</div>
+              <div class="tool-cont-item-num">${item.inventory}</div>
             </div>`
             showHtml+=itemHtml;
         })
@@ -254,7 +267,15 @@
         let open = document.querySelector('.tool-open');
         let close = document.querySelector('.tool-close');
         if(val == 0) { toolBtn.setAttribute('data-open',false); openNewPrize(); isStart = true;isEnd=false;timeContent.innerText='';}
-        if(val == 1 ){ toolBtn.setAttribute('data-open',true);showStartTime(); isStart = true; openNewPrize();}
+        if(val == 1 ){ 
+          toolBtn.setAttribute('data-open',true);
+          showStartTime(); 
+          isStart = true; 
+          openNewPrize();
+          getDataTime = setInterval(() => {
+            getState();
+          }, 2000);
+        }
         if(val == 2) { closeTool(); ;return;}
         if(toolBtn.getAttribute('data-open')=== 'true'){
           // 开启
@@ -276,6 +297,9 @@
           time:new Date().Format('yyyy-MM-dd HH:mm:ss')
         } ;
         let state = Encrypt(JSON.stringify(obj));
+        getDataTime = setInterval(() => {
+          getState();
+        }, 2000);
         startOREnd({data:state}).then(res=>{
           let cont = Decrypt(res.data)
           console.log(cont,"√")
@@ -318,6 +342,7 @@
       async function  hideEndTime() {
         let timeContent = document.querySelector('.tool-time-show');
         clearInterval(nowTime);
+        clearInterval(getDataTime);
         getStartTime(2).then(res=>{
           let timeDuan = res?res:0;
           timeContent.innerText = secondsFormat(timeDuan) 
@@ -331,7 +356,13 @@
           var hour = Math.floor( (s - day*24*3600) / 3600); 
           var minute = Math.floor( (s - day*24*3600 - hour*3600) /60 ); 
           var second = s - day*24*3600 - hour*3600 - minute*60; 
-          return  minute +' '+ " 分 " + second + " 秒"; 
+          hour =  hour<10 ? '0'+hour :hour
+          minute =  minute<10 ? '0'+minute :minute
+          second =  second<10 ? '0'+second :second
+          if(day) return day + ' 天 '+ hour +' 时 ' + minute +' '+ " 分 " + second + " 秒"; 
+          if(hour) return hour +' 时 ' + minute +' '+ " 分 " + second + " 秒"; 
+          if(minute) return minute +' '+ " 分 " + second + " 秒"; 
+          if(second) return second + " 秒"; 
       }
       // 获取开始抽奖时间 - 当前时间 时间戳
       function getStartTime(status){

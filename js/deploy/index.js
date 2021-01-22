@@ -1,4 +1,4 @@
-const request = axios.create({baseURL: 'http://114.116.17.81:8234'});
+const request = axios.create({baseURL: 'https://api.asyware.com/wheelgame'});
 // const request = axios.create({baseURL: 'http://192.168.0.174:8234'});
 
 // 获取当前轮配置
