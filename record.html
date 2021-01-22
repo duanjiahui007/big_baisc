@@ -5,10 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <meta name="viewport" viewport-fit=cover>
   <link rel="stylesheet" href="./css/record.css">
+  <link rel="stylesheet" href="./css/loading.css">
   <script src="./js/tool/ios.js"></script>
   <title>数据统计</title>
 </head>
 <body>
+  <!-- loading -->
+  <div class="loading">
+    <div class="loading-content">
+    </div>
+  </div>
+
+
   <main>
     <!-- 数据统计 -->
     <div class="record">
@@ -19,7 +27,7 @@
       <!-- 统计数据 -->
       <div class="record-data">
         <!-- 有数据 -->
-        <div class="record-data-show">
+        <div class="record-data-show" id="recordBox">
           <div class="record-data-show-item">
             <div class="record-data-show-item-t">
               <div class="order">第一轮</div>
@@ -47,60 +55,8 @@
               </div>
             </div>
           </div>
-          <div class="record-data-show-item">
-            <div class="record-data-show-item-t">
-              <div class="order">第二轮</div>
-              <div class="time">
-                <span>抽奖时长:</span>
-                <span>24:58:24</span>
-              </div>
-            </div>
-            <div class="record-data-show-prize">
-              <div class="prize">
-                <div class="name"></div>
-                <div class="num"></div>
-              </div>
-              <div class="prize">
-                <div class="name">小熊派摩卡咖啡机</div>
-                <div class="num">23232</div>
-              </div>
-              <div class="prize">
-                <div class="name">小熊派摩卡咖啡机</div>
-                <div class="num">23232</div>
-              </div>
-              <div class="prize">
-                <div class="name">小熊派摩卡咖啡机</div>
-                <div class="num">23232</div>
-              </div>
-            </div>
-          </div>
-          <div class="record-data-show-item">
-            <div class="record-data-show-item-t">
-              <div class="order">第三轮</div>
-              <div class="time">
-                <span>抽奖时长:</span>
-                <span>24:58:24</span>
-              </div>
-            </div>
-            <div class="record-data-show-prize">
-              <div class="prize">
-                <div class="name"></div>
-                <div class="num"></div>
-              </div>
-              <div class="prize">
-                <div class="name">小熊派摩卡咖啡机</div>
-                <div class="num">23232</div>
-              </div>
-              <div class="prize">
-                <div class="name">小熊派摩卡咖啡机</div>
-                <div class="num">23232</div>
-              </div>
-              <div class="prize">
-                <div class="name">小熊派摩卡咖啡机</div>
-                <div class="num">23232</div>
-              </div>
-            </div>
-          </div>
+         
+          
         </div>
         <!-- 没数据 -->
         <div class="record-data-hide" style="display:none"></div>
@@ -114,24 +70,31 @@
       <div class="total-data">
         <div class="total-data-item">
           <div class="item-key">参与人数:</div>
-          <div class="item-value">000000</div>
+          <div class="item-value" id='joinBox'>000000</div>
         </div>
         <div class="total-data-item">
           <div class="item-key">抽奖时间:</div>
-          <div class="item-value">00000</div>
+          <div class="item-value" id="timeBox">00000</div>
         </div>
         <div class="total-data-item">
           <div class="item-key">已送奖品:</div>
-          <div class="item-value">00000</div>
+          <div class="item-value" id="winBox">00000</div>
         </div>
         <div class="total-data-item">
           <div class="item-key">奖品剩余:</div>
-          <div class="item-value">00000</div>
+          <div class="item-value" id="surplusBox">00000</div>
         </div>
       </div>
     </div>
   </main>
+
+  <!-- 消息提示 -->
+  <div class="mask-msg mask-msg-hide">
+    <div class="msg-txt">提示消息</div>
+  </div>
   <script src="./js/flexible/flexible.js"></script>
+  <script src="./js/tool/ios.js"></script>
+  <script src="./js/loading/index.js"></script>
   <script src="./js/tool/CryptoJS.min.js"></script>
   <script src="./js/tool/secret.js"></script>
   <script src="./js/tool/axios.min.js"></script>
@@ -139,13 +102,92 @@
   <script>
     window.onload = () =>{
       getData();
+      document.querySelector('.loading').style.display = 'none';
     }
+    // 全局数据变量
+    let recordData = []; //所有轮次数据
+    let peopleNum = ''; //参与人数
+    let time = ''; //抽奖时间
+    let given = ''; // 已送奖品 
+    let surplus = ''; //剩余奖品
+    let allMsg = new getMessage(''); //全局提示文字
     // 获取数据统计
     function getData() {
       getDataRecord().then(res=>{
         console.log(JSON.parse(Decrypt(res.data)))
+        let datas = JSON.parse(Decrypt(res.data));
+        if(datas.code == 0){
+          recordData = [...datas.data.activityPrizeVos]
+          peopleNum = datas.data.joinNum;
+          time = datas.data.activityTime;
+          given = datas.data.winNum;
+          surplus = datas.data.inventory;
+          readDataDom();
+        }else {
+          allMsg.msg = datas.message;
+          allMsg.show();
+          readDataDom();
+        }
+      }).catch(err=>{
+        allMsg.msg = "数据有误！";
+        allMsg.show();
+        console.log(allMsg)
+        readDataDom();
       })
     }
+    // 将数据渲染到页面
+    function readDataDom(){
+      let recordBox  = document.getElementById('recordBox');
+
+      let joinBox = document.getElementById('joinBox');
+      let timeBox = document.getElementById('timeBox');
+      let winBox = document.getElementById('winBox');
+      let surplusBox = document.getElementById('surplusBox');
+
+      joinBox.innerText = peopleNum?peopleNum : 0;
+      timeBox.innerText = time?time:0;
+      winBox.innerText = given?given:0;
+      surplusBox.innerText = surplus?surplus:0;
+
+
+      if(recordData.length>0){
+        let isHtml = ``;
+        recordData.forEach((item,index )=> {
+          let itemsTop = `<div class="record-data-show-item-t">
+              <div class="order">第${index+1}轮</div>
+              <div class="time">
+                <span>抽奖时长:</span>
+                <span>${secondsFormat(item.activityTime)}</span>
+              </div>
+            </div>`
+          let itemsChildArr = ``;
+          item.prizeTotalVos.forEach(child => {
+            let itemsChild = `<div class="prize">
+                <div class="name">${child.name}</div>
+                <div class="num">${child.prizeNum}</div>
+              </div>`
+            itemsChildArr+= itemsChild;
+          });
+          let itemsBottom = `<div class="record-data-show-prize">${itemsChildArr}</div>`
+          let itemsHtml = `<div class="record-data-show-item">${itemsTop} ${itemsBottom}</div>`
+          isHtml+= itemsHtml;
+        })
+        recordBox.innerHTML = isHtml;
+      }else {
+        let isHtml = `<div class="record-data-show-item"><div class="record-no-data">暂无数据</div></div>`
+        recordBox.innerHTML = isHtml;
+      }
+
+      
+    }
+
+    function secondsFormat( s ) { 
+          var day = Math.floor( s/ (24*3600) ); // Math.floor()向下取整 
+          var hour = Math.floor( (s - day*24*3600) / 3600); 
+          var minute = Math.floor( (s - day*24*3600 - hour*3600) /60 ); 
+          var second = s - day*24*3600 - hour*3600 - minute*60; 
+          return hour +' : ' + minute + " : " + second ; 
+      }
   </script>
 </body>
 </html>

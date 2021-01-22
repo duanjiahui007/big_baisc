@@ -162,7 +162,6 @@
         getToolPrize('1').then(res => {
           let isData = JSON.parse(Decrypt(res.data));
           if(isData.code == 0 && isData.data.length>0){
-            console.log(isData)
             
             readToolShow(isData.data);
             moveSwitch(isData.data[0].status)
@@ -254,7 +253,7 @@
         let toolBtn = document.querySelector('.tool-btn');
         let open = document.querySelector('.tool-open');
         let close = document.querySelector('.tool-close');
-        if(val == 0) { toolBtn.setAttribute('data-open',false); openNewPrize(); isStart = true;timeContent.innerText='';}
+        if(val == 0) { toolBtn.setAttribute('data-open',false); openNewPrize(); isStart = true;isEnd=false;timeContent.innerText='';}
         if(val == 1 ){ toolBtn.setAttribute('data-open',true);showStartTime(); isStart = true; openNewPrize();}
         if(val == 2) { closeTool(); ;return;}
         if(toolBtn.getAttribute('data-open')=== 'true'){

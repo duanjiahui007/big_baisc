@@ -25,7 +25,9 @@ main {
   margin:  0 auto .266667rem
 }
 /* 数据统计 */
-.record {}
+.record {
+  margin-bottom: .533333rem;
+}
 
 .record .record-title {
   width: 2.88rem;
@@ -112,7 +114,15 @@ main {
 } 
 
 /* 没数据显示 */
-
+.record-data-show-item  .record-no-data {
+  height: 1.28125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: .64rem;
+  color: #ffffff;
+  letter-spacing: .020833rem;
+}
 
 
 /* 共计 */
