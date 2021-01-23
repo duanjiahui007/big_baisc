@@ -26,7 +26,7 @@ function hasToken(){
   // if(!token){
   //   return 
   return   new Promise((reslove,reject)=>{
-        let id = !!getQueryVariable('id')?getQueryVariable('id') : parseInt(Math.random()*1000+1);
+        let id = !!getQueryVariable('id')?getQueryVariable('id') : parseInt(Math.random()*100000+1);
         // alert(!!getQueryVariable('id')+'__request__id'+id)
         localStorage.setItem('id',id);
         getToken({userId:id}).then(res=>{

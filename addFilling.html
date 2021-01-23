@@ -36,11 +36,11 @@
    <div class="add-fill-address">
      <div class="add-fill-address-item">
        <label for="name">姓名:</label>
-       <input id="name" name="name" type="text" autofocus />
+       <input id="name" name="name" type="text" autofocus onblur="inputDie()" />
      </div>
      <div class="add-fill-address-item">
       <label for="phone">电话:</label>
-      <input id="phone"  type="text"  />
+      <input id="phone"  type="text"  onblur="inputDie()" oninput="SetInput()"/>
     </div>
     <div class="add-fill-address-item" id='cirtyBox'>
       <label for="cirty">省市区:</label>
@@ -48,7 +48,7 @@
     </div>
     <div class="add-fill-address-item" id="addressBox">
       <label for="address">详细地址:</label>
-      <input id="address" type="text"  />
+      <input id="address" type="text" onblur="inputDie()" />
     </div>
    </div>
    <!-- 提交按钮 -->
@@ -112,6 +112,7 @@
     let userCity = '';
     let userAddress = '';
     let isQuan = false;
+    const windowHeight = window.innerHeight ;// 刚进入页面 页面的内容高度
 
 
     let nameDom = document.getElementById('name');
@@ -210,8 +211,31 @@
         })
       }
 
-  
-
+      // 关于ios 输入框消失 页面回弹问题
+      function inputDie() {
+        let windowFocusHeight = window.innerHeight
+        if (windowHeight == windowFocusHeight) {
+          return
+        }
+        console.log(windowHeight + '--' + windowFocusHeight);
+        console.log('修复');
+        let currentPosition;
+        let speed = 1; //页面滚动距离
+        currentPosition = document.documentElement.scrollTop || document.body.scrollTop;
+        currentPosition -= speed;
+        window.scrollTo(0, currentPosition); //页面向上滚动
+        currentPosition += speed; //speed变量
+        window.scrollTo(0, currentPosition); //页面向下滚动
+      }
+      // 限制输入框长度
+      function SetInput(){
+        let ev =  event.target || event.srcElement;
+        if(ev.value.length > 11 ){
+          ev.value = ev.value.slice(0,11);
+        }else if(ev.value == ''){
+          ev.value = '';
+        }
+      }
   </script>
 
 </body>
