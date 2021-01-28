@@ -537,6 +537,18 @@ header .header-right i {
   align-items: center;
   box-sizing: border-box;
 }
+.mePrize .mePrize-copone .goAddFill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: .8rem;
+  border-radius: .133333rem;
+  background-image: linear-gradient(#fe8500,#ffb202,#ffb202);
+  font-size: .533333rem;
+  margin: .533333rem auto 0;
+  color: #ffffff;
+}
 .mePrize .mePrize-copone .mePrize-coupon-ma span {
   flex-shrink: 0;
   margin-right: .266667rem;

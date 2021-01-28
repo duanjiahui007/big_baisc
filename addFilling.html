@@ -80,25 +80,26 @@
   <script src="./js/picker/city.js"></script>
   <script src="./js/picker/index.js"></script>
   <script src="./js/home/index.js"></script>
+  <script src="./js/home/login.js"></script>
   <script>
     // 关闭loading
     window.onload = () =>{
-      localStorage.removeItem('id');
-      localStorage.removeItem('token');
-      if(token){
-        token = '';
-        localStorage.removeItem('id');
-        localStorage.removeItem('token');
-      }
+      // localStorage.removeItem('id');
+      // localStorage.removeItem('token');
+      // if(token){
+      //   token = '';
+      //   localStorage.removeItem('id');
+      //   localStorage.removeItem('token');
+      // }
       // alert(token)
       // !!hasToken()?
-      (()=>{ 
+      // (()=>{ 
           // alert('ok')
           // alert(location.href)
-          hasToken().then(res=>{ 
+          // hasToken().then(res=>{ 
             getIsPrizeMsg();
-          })
-        })()
+        //   })
+        // })()
       // :
       // (()=>{
       //     // alert('No')
@@ -159,7 +160,7 @@
         userPrize().then(res=>{
           let datas = JSON.parse(Decrypt(res.data))
           let hasPrize = datas.data[0];
-          console.log(JSON.parse(Decrypt(res.data)),"中奖信息");
+          // console.log(JSON.parse(Decrypt(res.data)),"中奖信息");
           // alert(res.config.headers['x-auth-token']+'段')
           if(!hasPrize){msg.msg = "没有中奖信息!";msg.show(); document.querySelector('.loading').style.display = 'none'; return;}
           if(hasPrize.grade == 4){isQuan = true};
@@ -205,7 +206,7 @@
               submitMask.classList.add("submit-mask");
             }else{
               msg.msg = response.message;
-              console.log(msg)
+              // console.log(msg)
               msg.show();
             }
         })
@@ -217,8 +218,8 @@
         if (windowHeight == windowFocusHeight) {
           return
         }
-        console.log(windowHeight + '--' + windowFocusHeight);
-        console.log('修复');
+        // console.log(windowHeight + '--' + windowFocusHeight);
+        // console.log('修复');
         let currentPosition;
         let speed = 1; //页面滚动距离
         currentPosition = document.documentElement.scrollTop || document.body.scrollTop;

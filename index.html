@@ -99,7 +99,7 @@
             <h3>活动说明:</h3>
             <ul class="ul-style">
               <li>大转盘抽奖分多轮进行,点击转盘中间按钮,即可开始游戏;</li>
-              <li>若玩家没有提交个人信息,则视为放弃所获奖品;</li>
+              <li>若玩家领奖时没有提交个人信息，则在"我的奖品"页面去完善领奖信息;</li>
               <li>若为实物类奖品,将根据用户填写的地址进行邮寄;若为卡券类奖品,请根据中奖页面的二维码提示进行领取使用。</li>
             </ul>
           </div>
@@ -166,14 +166,16 @@
           <img src="./image/close.png" alt="close" id="close-box" class="close-1" onclick="closeMePrize()"/>
         </div> 
         <!-- 卡券显示/卡券密码显示 -->
-        <div class="mePrize-coupon-ma hasCode" style="display: none;">
-          <span>卡券编码:</span>
+        <div class="mePrize-coupon-ma hasCode" style="display: none;"  id="cordID">
+          <span >卡券编码:</span>
           <p id="codeNumbox">卡券编码显示位</p>
         </div> 
-        <div class="mePrize-coupon-ma hasCode" style="display: none;">
+        <div class="mePrize-coupon-ma hasCode" style="display: none;" id="cordPwdID">
           <span>卡券密码:</span>
           <p id="codePwdBox">卡券密码显示</p>
         </div>
+        <!-- v-if="isMeHasPrizeOk" -->
+        <div  class="goAddFill" onclick="clickOkUser()" id="clickMsg1" style="display: none;">点击完善信息</div>
         <div class="mePrize-coupon-code-explain hasCode" style="display: none;">
           <h3>卡券绑定</h3>
           <p>微信关注中福尚优公众号-进入我的卡券-绑定卡券-输入账号密码绑定卡券-绑定成功</p>
@@ -201,10 +203,11 @@
         </div>
        
         <!-- 非卡券显示 -->
-        <div class="mePrize-copone-content rules-show-content mePrize-copone-no-code noCode" style="display: none;">
+        <div class="mePrize-copone-content rules-show-content mePrize-copone-no-code noCode" style="display: none; transform: none;">
           <img src="./image/close.png" alt="close" id="close-box" class="close-1" onclick="closeMePrize()"/>
           <div class="mePrize-copone-imges" id="noCodeImage"></div>
         </div>
+        <div  class="goAddFill" onclick="clickOkUser()" id="clickMsg2" style="display: none;">点击完善信息</div>
         <div class="mePrize-coupon-rules-goods-txt noCode" style="display: none;">
           <h3>派送方式</h3>
           <p>直播结束三日后, 银行工作人员将会致电,确认无误后会根据所填地址进行邮寄。</p>
@@ -226,44 +229,52 @@
   <script src="./js/tool/secret.js"></script>
   <script src="./js/tool/axios.min.js"></script>
  
-  <!-- 登录 -->
-  <!-- <script src="./js/home/login.js"></script> -->
+
   <!-- 首页api -->
   <script src="./js/home/index.js"></script>
 
   <script>
      window.onload = () =>{
-      localStorage.removeItem('id');
-      localStorage.removeItem('token');
-      if(token){
-        token = '';
-        localStorage.removeItem('id');
-        localStorage.removeItem('token');
-      }
+      // localStorage.removeItem('id');
+      // localStorage.removeItem('token');
+      // if(!token){
+      //       getPieList();
+      //       userBout();
+      //       getHasRanking();
+      //       getMePrizeHttp();
+      //   token = '';
+      //   localStorage.removeItem('id');
+      //   localStorage.removeItem('token');
+       
+      // }
       // alert(localStorage.getItem('token')+"8888------------8888")
       // alert(token)
       //  alert(!!hasToken())
-      // !!hasToken()?
+      !!hasToken()?
       (()=>{
         hasToken().then(res=>{
-      //   // alert('token')
+        // alert('token')
         getPieList();
         userBout();
         getHasRanking();
         getMePrizeHttp();
       })})()
-      // :(()=>{
-      //   // alert("pdd")
-      //   getPieList();
-      //   userBout();
-      //   getHasRanking();
-      //   getMePrizeHttp();
-      // })()
+      :(()=>{
+        // alert("pdd")
+        getPieList();
+        userBout();
+        getHasRanking();
+        getMePrizeHttp();
+      })()
       // alert(localStorage.getItem('id'))
     }
     // loading 关闭
     function  closeLoading() {
       document.querySelector('.loading').style.display = 'none';
+    }
+    // loading 开启
+    function  startLoading() {
+      document.querySelector('.loading').style.display = 'block';
     }
     // 全局提示
     let allMsg =  new getMessage('');
@@ -287,14 +298,16 @@
     // 我的奖品
     let isQuan = false ; //是否是奖券
     let isMeHasPrize = false ; //是否获取奖品
+    let isMeHasPrizeOk = false ; //是否将获奖用户信息填写提交
 
     // 获取转盘奖品列表
     function getPieList(){
+      // alert(token);
       getWheelPrize('2').then(res => {
         let datas = JSON.parse(Decrypt(res.data));
         if(datas.code == '0' ){
           pieData = datas.data;
-          console.log(datas,"奖品列表")
+          // console.log(datas,"奖品列表")
           let obj = {
             id:0,
             imageUrl: './image/05.png',
@@ -304,11 +317,13 @@
           pieData.splice(3,0,obj)
           createPrizeList(domPie,prizeNum,datas.data);
         }else {
-          console.log(datas,"奖品列表");
+          // console.log(datas,"奖品列表");
           allMsg.msg = '游戏尚未开始' ;
           allMsg.show();
           closeLoading();
         }
+      }).catch(err=>{
+        alert(err)
       })
     }
     
@@ -343,7 +358,7 @@
     function userBout(){
       let PlayBout = document.querySelector('.play-bout');
       userPlayRounds().then(res =>{
-        console.log(JSON.parse(Decrypt(res.data)),"游戏次数");
+        // console.log(JSON.parse(Decrypt(res.data)),"游戏次数");
         let datas = JSON.parse(Decrypt(res.data));
         // alert(res.config.headers['x-auth-token']+'段')
         userBoutNum = datas.data;
@@ -354,7 +369,7 @@
     // 用户抽奖
     async function userPlayGame(){
       let a =  await playStart().then(res=>{
-        console.log(JSON.parse(Decrypt(res.data)))
+        // console.log(JSON.parse(Decrypt(res.data)))
         return JSON.parse(Decrypt(res.data)).data
       })
       return a 
@@ -393,12 +408,16 @@
 
     // 我的奖品
     function getMePrize() {
-      MaskDom.style.display = 'block';
-      rulesShow.style.display = 'none';
-      rankingShow.style.display = 'none';
-      noChance.style.display = 'none';
-      mePrize.style.display = 'flex';
-      document.body.classList.add('body-disabled');
+      this.startLoading();
+      this.getMePrizeHttp().then(res=>{
+        this.closeLoading();
+        MaskDom.style.display = 'block';
+        rulesShow.style.display = 'none';
+        rankingShow.style.display = 'none';
+        noChance.style.display = 'none';
+        mePrize.style.display = 'flex';
+        document.body.classList.add('body-disabled');
+      });
     }
     // 我的奖品阻止冒泡
     function stopPrizeClose() {
@@ -412,25 +431,34 @@
     }
     // 获取我的奖品
     function  getMePrizeHttp() {
-      userPrize().then(res=>{
-        let isMePrizeRepouest = JSON.parse(Decrypt(res.data));
-        let isMePrizeData = isMePrizeRepouest.data;
-        console.log(isMePrizeRepouest)
-        if(isMePrizeRepouest.code !== 0) {
-          allMsg.msg = isMePrizeRepouest.message;
-          allMsg.show();
-          return ;
-        }
-        if(isMePrizeData && isMePrizeData.length>0){
-          isMeHasPrize = true;
-
-          isQuan = !!(isMePrizeData[0].code)? true : false ;
-          showPrize(isMePrizeData[0]);
-        }
+      return new Promise((reslove,reject)=>{
+         userPrize().then(res=>{
+          let isMePrizeRepouest = JSON.parse(Decrypt(res.data));
+          let isMePrizeData = isMePrizeRepouest.data;
+          console.log(isMePrizeData)
+          if(isMePrizeRepouest.code !== 0) {
+            allMsg.msg = isMePrizeRepouest.message;
+            allMsg.show();
+            reslove()
+            return ;
+          }
+          if(isMePrizeData && isMePrizeData.length>0){
+            isMeHasPrize = true;
+            isQuan = !!(isMePrizeData[0].grade == 4)? true : false ;
+            isMeHasPrizeOk = isMePrizeData[0].status == 0? true:false;
+            showPrize(isMePrizeData[0]);
+          }
+          reslove()
+        })
       })
+      
     }
     // 显示普通奖品 /  奖券
     function showPrize(data) {
+      let quanCard = document.getElementById('cordID');
+      let quanCardPwd = document.getElementById('cordPwdID')
+      let btnGo1  = document.getElementById('clickMsg1');
+      let btnGo2  = document.getElementById('clickMsg2');
       let noPrize = document.querySelector('.noHasMePrize') // 没有获得奖品
       let hasPrize = document.querySelector('.hasMePrize'); // 有获得奖品
       let isCodeShow = document.getElementsByClassName('hasCode'); // 是奖券
@@ -457,6 +485,12 @@
             })
             isCodeNum.innerText = data.code;
             isCodePwd.innerText = data.pwd;
+            if(isMeHasPrizeOk){
+              quanCard.style.display = 'none'
+              quanCardPwd.style.display = 'none'
+              btnGo1.style.display = 'flex';
+              btnGo2.style.display = 'none'
+            }
         }else{
             NoCodeImage.innerHTML = `<img src="${data.realUrl}" />`
             isCodeShow.forEach(item=>{
@@ -465,6 +499,10 @@
             isNoCodeShow.forEach(item => {
             item.style.display = 'block'
           })
+          if(isMeHasPrizeOk){
+              btnGo2.style.display = 'flex';
+              btnGo1.style.display = 'none';
+            }
         }
       }else {
         noPrize.style.display = 'block';
@@ -473,7 +511,10 @@
       
       
     }
-    
+    // 点击补全用户信息
+    function clickOkUser(){
+      location.href = './addFilling.html?id='+`${localStorage.getItem('id')}`;
+    }
 
     // 中奖名单 
     let rankingDom = document.getElementById('ranking');
@@ -490,7 +531,7 @@
     function getHasRanking () {
       userRanking().then(res => {
         let datas = JSON.parse(Decrypt(res.data)) 
-        console.log(JSON.parse(Decrypt(res.data)),"排行榜")
+        // console.log(JSON.parse(Decrypt(res.data)),"排行榜")
         readHasRanking(datas.data);
       })
     }
@@ -548,7 +589,7 @@
           winIndex = inx
         }
       })
-      console.log(winIndex, index >= 0 ,index)
+      // console.log(winIndex, index >= 0 ,index)
       pieMoveMent();
       userBout();
       getHasRanking();
@@ -614,5 +655,7 @@
 
 
   </script>
+  <!-- 登录 -->
+  <!-- <script src="./js/home/login.js"></script> -->
 </body>
 </html>

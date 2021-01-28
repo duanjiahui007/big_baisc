@@ -1,17 +1,18 @@
-
-const APP_ID = "0d17557f-7c68-4f22-9d41-b31c588328b5"
-const MER_ID = "2001"
+const APP_ID = "e57e70d3-4f50-4fde-9f8b-a0f686852673"
+const MER_ID = "2030"
 const SCOPE = "1 2 3 4 5 6 7"
 
 const getRandom = function(){
   return `${Math.ceil(Math.random() * 1000)}`
 }
 
-const isAndroid = function(){
+const isAndroids = function(){
   return !!window.jsInterface.getUserAuthCode
 }
 
-const getAuth = function(){
+ const getAuth = function(){
+  //  alert("xxss")
+
   try{
     const authParams = {
       merId: MER_ID, // 在手机银行申请到的商户Id
@@ -21,11 +22,12 @@ const getAuth = function(){
       callbackName: 'authCallBack', // 回调函数的名称,全局方法
     }
     const stringParams = JSON.stringify(authParams)	
-    if(isAndroid()) {
+    if(isAndroids()) {
       window.jsInterface.getUserAuthCode(stringParams)
     } else {
       window.webkit.messageHandlers.getUserAuthCode.postMessage(stringParams)
     }
+
   }catch(error){
     alert(error)
   }
@@ -49,37 +51,68 @@ const getCodeForUserId = function(){
     appId: APP_ID,
     callbackName: 'codeForUserIdCallBack'
   }
-  const stringParams = JSON.stringify(params)
-  if(isAndroid()){
-    window.jsInterface.getCodeForUserId(stringParams)
+  const stringParams = JSON.stringify(params);
+  if(isAndroids()){
+    window.jsInterface.getCodeForUserId(stringParams);
   } else {
     window.webkit.messageHandlers.getCodeForUserId.postMessage(stringParams);
   }
 }
 
 const codeForUserIdCallBack = function(codeForUserIdResult){
-  getUserByCode(codeForUserIdResult)
+     getUserByCode(codeForUserIdResult)
 }
 
 const getUserByCode = function(code){
-  alert('send code:' + code,"1211");
+  // alert('send code:' + code+"____1211");
   if(!code){
-    if(isAndroid()){
+    alert("用户未登录!")
+    if(isAndroids()){
       window.jsInterface.close()
     } else {
       window.webkit.messageHandlers.getCodeForUserId.close();
     }
   }
   const instance = axios.create({
-    baseURL: 'http://114.116.17.81:8234'
+    baseURL: 'https://game.cebbank-xa.com/wheelgame'
+    // baseURL: 'http://192.168.0.174:8234'
   })
-  // const baseUrl = 'https://game.cebbank-xa.com/bankconvert'
-  instance({
-    url: `/login/${code}`,
-    method: 'get'
-  }).then(response => {
-    alert(JSON.stringify(response),"233")
-  })
-}
-getAuth();
+
+  if(!token){
+    instance({
+      url: `/login/${code}`,
+      method: 'get'
+    }).then(response => {
+      // alert(JSON.stringify(response.headers),"233");
+      // alert(JSON.stringify(Decrypt(response.data)));
   
+      let datas = JSON.parse(Decrypt(response.data));
+      if(datas.code == -1){
+        alert("用户登录失败！请重新进入")
+        if(isAndroids()){
+          window.jsInterface.close()
+        } else {
+          window.webkit.messageHandlers.getCodeForUserId.close();
+        }
+      }else{
+        // alert(response.headers['x-auth-token'])
+        localStorage.setItem('token',response.headers['x-auth-token']);
+        token = localStorage.getItem('token');
+        getPieList();
+        userBout();
+        getHasRanking();
+        getMePrizeHttp();
+      }
+     
+    })
+  }else{
+      getPieList();
+      userBout();
+      getHasRanking();
+      getMePrizeHttp();
+  }
+} 
+getAuth();
+
+
+

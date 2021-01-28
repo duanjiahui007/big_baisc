@@ -1,45 +1,48 @@
-const request = axios.create({baseURL: 'https://api.asyware.com/wheelgame'}); 
+const request = axios.create({baseURL: 'https://game.cebbank-xa.com/wheelgame'}); 
+// const request = axios.create({baseURL: 'https://api.asyware.com/wheelgame'}); 
 // const request = axios.create({baseURL: 'http://192.168.0.174:8234'});
-let token = localStorage.getItem('token')? localStorage.getItem('token') : '';
+// let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+let token = localStorage.getItem('token');
 
 
-function getQueryVariable(variable)
-{
-       var query = window.location.search.substring(1);
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == variable){return pair[1];}
-       }
-       return(false);
-}
-// 获取token ---本地-- 测试取法 --
-function getToken(params) {
-  return request({
-    url:'/login',
-    method:'get',
-    params
-  })
-}
+// url 截取 数据
+// function getQueryVariable(variable)
+// {
+//        var query = window.location.search.substring(1);
+//        var vars = query.split("&");
+//        for (var i=0;i<vars.length;i++) {
+//                var pair = vars[i].split("=");
+//                if(pair[0] == variable){return pair[1];}
+//        }
+//        return(false);
+// }
+// // // 获取token ---本地-- 测试取法 --
+// function getToken(params) {
+//   return request({
+//     url:'/login',
+//     method:'get',
+//     params
+//   })
+// }
 
-function hasToken(){
-  // if(!token){
-  //   return 
-  return   new Promise((reslove,reject)=>{
-        let id = !!getQueryVariable('id')?getQueryVariable('id') : parseInt(Math.random()*100000+1);
-        // alert(!!getQueryVariable('id')+'__request__id'+id)
-        localStorage.setItem('id',id);
-        getToken({userId:id}).then(res=>{
-          console.log(res)
-          // alert(!!getQueryVariable('id')+'__save__id'+id)
-          token = res.headers['x-auth-token'];
-          localStorage.setItem('token',token);
-          reslove();
-        })
-    })
-  // }
-  // return false
-}
+// function hasToken(){
+//   // if(!token){
+//   //   return 
+//   return   new Promise((reslove,reject)=>{
+//         let id = !!getQueryVariable('id')?getQueryVariable('id') : parseInt(Math.random()*100000+1);
+//         // alert(!!getQueryVariable('id')+'__request__id'+id)
+//         localStorage.setItem('id',id);
+//         getToken({userId:id}).then(res=>{
+//           console.log(res)
+//           // alert(!!getQueryVariable('id')+'__save__id'+id)
+//           token = res.headers['x-auth-token'];
+//           localStorage.setItem('token',token);
+//           reslove();
+//         })
+//     })
+//   // }
+//   // return false
+// }
 
 
 
