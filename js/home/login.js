@@ -11,7 +11,6 @@ const isAndroids = function(){
 }
 
  const getAuth = function(){
-  //  alert("xxss")
 
   try{
     const authParams = {
@@ -64,7 +63,6 @@ const codeForUserIdCallBack = function(codeForUserIdResult){
 }
 
 const getUserByCode = function(code){
-  // alert('send code:' + code+"____1211");
   if(!code){
     alert("用户未登录!")
     if(isAndroids()){
@@ -75,42 +73,30 @@ const getUserByCode = function(code){
   }
   const instance = axios.create({
     baseURL: 'https://game.cebbank-xa.com/wheelgame'
-    // baseURL: 'http://192.168.0.174:8234'
   })
+  instance({
+    url: `/login/${code}`,
+    method: 'get'
+  }).then(response => {
 
-  if(!token){
-    instance({
-      url: `/login/${code}`,
-      method: 'get'
-    }).then(response => {
-      // alert(JSON.stringify(response.headers),"233");
-      // alert(JSON.stringify(Decrypt(response.data)));
-  
-      let datas = JSON.parse(Decrypt(response.data));
-      if(datas.code == -1){
-        alert("用户登录失败！请重新进入")
-        if(isAndroids()){
-          window.jsInterface.close()
-        } else {
-          window.webkit.messageHandlers.getCodeForUserId.close();
-        }
-      }else{
-        // alert(response.headers['x-auth-token'])
-        localStorage.setItem('token',response.headers['x-auth-token']);
-        token = localStorage.getItem('token');
-        getPieList();
-        userBout();
-        getHasRanking();
-        getMePrizeHttp();
+    let datas = JSON.parse(Decrypt(response.data));
+    if(datas.code == -1){
+      alert("用户登录失败！请重新进入")
+      if(isAndroids()){
+        window.jsInterface.close()
+      } else {
+        window.webkit.messageHandlers.getCodeForUserId.close();
       }
-     
-    })
-  }else{
+    }else{
+      localStorage.setItem('token',response.headers['x-auth-token']);
+      token = localStorage.getItem('token');
       getPieList();
       userBout();
       getHasRanking();
       getMePrizeHttp();
-  }
+    }
+    
+  })
 } 
 getAuth();
 

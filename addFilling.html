@@ -152,7 +152,9 @@
         let submitMask = document.getElementById('submit-box');
         submitMask.classList.remove("submit-mask");
         // alert(localStorage.getItem('id')+"__jump_index")
-        location.href = './index.html?&id='+`${localStorage.getItem('id')}`
+        // let newUrl = './index.html?&id='+`${localStorage.getItem('id')}`
+        let newUrl = './index.html';
+        location.replace(newUrl);
       }
 
       // 获取当前中奖信息
@@ -160,8 +162,6 @@
         userPrize().then(res=>{
           let datas = JSON.parse(Decrypt(res.data))
           let hasPrize = datas.data[0];
-          // console.log(JSON.parse(Decrypt(res.data)),"中奖信息");
-          // alert(res.config.headers['x-auth-token']+'段')
           if(!hasPrize){msg.msg = "没有中奖信息!";msg.show(); document.querySelector('.loading').style.display = 'none'; return;}
           if(hasPrize.grade == 4){isQuan = true};
           address();
@@ -177,7 +177,6 @@
       }
       // 地址选择 显示 / 隐藏
       function  address() {
-        
         if(isQuan) {
           cirtyDomBox.style.display = 'none';
           addressDomBox.style.display = 'none';
@@ -206,7 +205,6 @@
               submitMask.classList.add("submit-mask");
             }else{
               msg.msg = response.message;
-              // console.log(msg)
               msg.show();
             }
         })

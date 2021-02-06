@@ -232,7 +232,7 @@
 
   <!-- 首页api -->
   <script src="./js/home/index.js"></script>
-
+  
   <script>
      window.onload = () =>{
       // localStorage.removeItem('id');
@@ -250,23 +250,23 @@
       // alert(localStorage.getItem('token')+"8888------------8888")
       // alert(token)
       //  alert(!!hasToken())
-      !!hasToken()?
-      (()=>{
-        hasToken().then(res=>{
-        // alert('token')
-        getPieList();
-        userBout();
-        getHasRanking();
-        getMePrizeHttp();
-      })})()
-      :(()=>{
-        // alert("pdd")
-        getPieList();
-        userBout();
-        getHasRanking();
-        getMePrizeHttp();
-      })()
-      // alert(localStorage.getItem('id'))
+      // !!hasToken()?
+      // (()=>{
+      //   hasToken().then(res=>{
+      //   // alert('token')
+      //   getPieList();
+      //   userBout();
+      //   getHasRanking();
+      //   getMePrizeHttp();
+      // })})()
+      // :(()=>{
+      //   // alert("pdd")
+      //   getPieList();
+      //   userBout();
+      //   getHasRanking();
+      //   getMePrizeHttp();
+      // })()
+    //   // alert(localStorage.getItem('id'))
     }
     // loading 关闭
     function  closeLoading() {
@@ -369,7 +369,7 @@
     // 用户抽奖
     async function userPlayGame(){
       let a =  await playStart().then(res=>{
-        // console.log(JSON.parse(Decrypt(res.data)))
+        console.log(JSON.parse(Decrypt(res.data)))
         return JSON.parse(Decrypt(res.data)).data
       })
       return a 
@@ -489,7 +489,7 @@
               quanCard.style.display = 'none'
               quanCardPwd.style.display = 'none'
               btnGo1.style.display = 'flex';
-              btnGo2.style.display = 'none'
+              btnGo2.style.display = 'none';
             }
         }else{
             NoCodeImage.innerHTML = `<img src="${data.realUrl}" />`
@@ -514,6 +514,8 @@
     // 点击补全用户信息
     function clickOkUser(){
       location.href = './addFilling.html?id='+`${localStorage.getItem('id')}`;
+      // let hrefUrl = './addFilling.html';
+      // location.replace(hrefUrl);
     }
 
     // 中奖名单 
@@ -630,6 +632,8 @@
           setTimeout(()=>{
             // alert(localStorage.getItem('id')+"__Jump_")
             location.href = './addFilling.html?id='+`${localStorage.getItem('id')}`;
+            // let hrefUrl = './addFilling.html';
+            // location.replace(hrefUrl);
           },1000);
           MaskDom.removeEventListener('click',MaskClose,false)
         }
@@ -656,6 +660,6 @@
 
   </script>
   <!-- 登录 -->
-  <!-- <script src="./js/home/login.js"></script> -->
+  <script src="./js/home/login.js"></script>
 </body>
 </html>
